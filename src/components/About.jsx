@@ -2,7 +2,8 @@ import React from "react";
 
 import { SectionWrapper } from "../hoc";
 
-/* import Tilt from "react-tilt";
+/* import Tilt from "react-tilt"; o import Tilt from "react-parallax-tilt";
+
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
