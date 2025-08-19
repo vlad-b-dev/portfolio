@@ -1,0 +1,11 @@
+Model Information:
+* title:	LowCity - Neon
+* source:	https://sketchfab.com/3d-models/lowcity-neon-0622ec574c2d41edac8677b8dde450c8
+* author:	Oleksandr Moroz (https://sketchfab.com/.om)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "LowCity - Neon" (https://sketchfab.com/3d-models/lowcity-neon-0622ec574c2d41edac8677b8dde450c8) by Oleksandr Moroz (https://sketchfab.com/.om) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
