@@ -229,7 +229,7 @@ const Computers = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
         ref={groupRef}
         scale={isMobile ? 0.7 : 1}
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
-        rotation={[0, (Math.PI / 2) * 3, 0]} 
+        rotation={[0, (Math.PI / 2) * 3, 0]}
       >
         {layerPaths.slice(0, visibleLayers).map((path, index) => (
           <Suspense key={path} fallback={null}>
@@ -293,7 +293,7 @@ const ComputersCanvas = () => {
       <Canvas
         frameloop="demand"
         shadows
-        dpr={[0.3, 0.7]}
+        dpr={[0.2, 0.5]}
         camera={{ position: [20, 3, 5], fov: 25 }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
