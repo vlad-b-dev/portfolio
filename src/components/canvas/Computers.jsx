@@ -293,7 +293,7 @@ const ComputersCanvas = () => {
       <Canvas
         frameloop="demand"
         shadows
-        dpr={[0.5, 0.9]}
+        dpr={[0.3, 0.7]}
         camera={{ position: [20, 3, 5], fov: 25 }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
