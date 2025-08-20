@@ -74,7 +74,7 @@ const CityLayer = ({ path, onPrepared }) => {
     if (!prepared) return;
     if (progressRef.current >= 1) return;
 
-    const fadeDurationSeconds = 2;
+    const fadeDurationSeconds = 1.2;
     progressRef.current = Math.min(
       1,
       progressRef.current + delta / fadeDurationSeconds
@@ -192,9 +192,11 @@ const ComputersCanvas = () => {
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={Math.PI / 2}
           />
-          <PerformanceMonitor onDecline={() => {}}>
-            <AdaptiveDpr pixelated />
-          </PerformanceMonitor>
+          {overlayOpacity === 0 && (
+            <PerformanceMonitor onDecline={() => {}}>
+              <AdaptiveDpr pixelated />
+            </PerformanceMonitor>
+          )}
           <Computers isMobile={isMobile} onFirstPrepared={startOverlayFade} />
         </Suspense>
       </Canvas>
