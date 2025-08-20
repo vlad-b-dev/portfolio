@@ -13,6 +13,7 @@ import {
   AdaptiveDpr,
   PerformanceMonitor,
 } from "@react-three/drei";
+import { Vector3, Spherical } from "three";
 
 import CanvasLoader from "../Loader";
 
@@ -104,8 +105,112 @@ const CityLayer = ({ path, onPrepared }) => {
 
 // PropTypes removed to avoid runtime dependency on 'prop-types'
 
-const Computers = ({ isMobile, onFirstPrepared }) => {
+const CameraDolly = ({
+  start,
+  durationSec = 2,
+  finalPosition = [20, 3, 5],
+  controlsRef,
+  progressRef, // optional shared ref to expose eased progress [0..1]
+}) => {
+  const { camera, invalidate } = useThree();
+  const startedRef = useRef(false);
+  const doneRef = useRef(false);
+  const fromRef = useRef(null);
+  const toRef = useRef(null);
+  const targetRef = useRef(new Vector3(0, 0, 0));
+  const localProgressRef = useRef(0);
+
+  const easeInOutCubic = (x) =>
+    x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+  useLayoutEffect(() => {
+    if (!start || startedRef.current || doneRef.current) return;
+
+    const currentTarget = controlsRef?.current?.target
+      ? controlsRef.current.target.clone()
+      : new Vector3(0, 0, 0);
+    targetRef.current.copy(currentTarget);
+
+    // Use the live camera position as the final destination to match controls' constraints
+    const toVec = controlsRef?.current
+      ? camera.position.clone()
+      : new Vector3(finalPosition[0], finalPosition[1], finalPosition[2]);
+    const direction = new Vector3()
+      .subVectors(toVec, currentTarget)
+      .normalize();
+    const finalDistance = currentTarget.distanceTo(toVec);
+    const startDistance = finalDistance * 1.5; // farther but same angle
+    const fromVec = new Vector3()
+      .copy(currentTarget)
+      .addScaledVector(direction, startDistance);
+
+    camera.position.copy(fromVec);
+    camera.lookAt(currentTarget);
+    camera.updateProjectionMatrix();
+    invalidate();
+
+    fromRef.current = fromVec;
+    toRef.current = toVec;
+    localProgressRef.current = 0;
+    startedRef.current = true;
+    if (controlsRef?.current) controlsRef.current.enabled = false;
+  }, [start, camera, invalidate, finalPosition]);
+
+  useFrame((_, delta) => {
+    if (!startedRef.current || doneRef.current) return;
+
+    const duration = Math.max(0.001, durationSec);
+    localProgressRef.current = Math.min(
+      1,
+      localProgressRef.current + delta / duration
+    );
+    const t = easeInOutCubic(localProgressRef.current);
+
+    // Expose eased progress to parent if requested
+    if (progressRef) progressRef.current = t;
+
+    const from = fromRef.current;
+    const to = toRef.current;
+    if (!from || !to) return;
+
+    camera.position.set(
+      from.x + (to.x - from.x) * t,
+      from.y + (to.y - from.y) * t,
+      from.z + (to.z - from.z) * t
+    );
+    camera.lookAt(targetRef.current);
+
+    if (localProgressRef.current >= 1) {
+      camera.position.set(to.x, to.y, to.z);
+      camera.lookAt(targetRef.current);
+      doneRef.current = true;
+      if (controlsRef?.current) controlsRef.current.enabled = true;
+      if (progressRef) progressRef.current = 1;
+    }
+
+    invalidate();
+  });
+
+  return null;
+};
+
+const Computers = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
   const [visibleLayers] = useState(layerPaths.length);
+  const groupRef = useRef();
+  const { invalidate } = useThree();
+
+  // Rotate city fast during dolly and ease to a slow continuous rotation
+  useFrame((_, delta) => {
+    const t = Math.min(1, Math.max(0, dollyProgressRef?.current ?? 1));
+    const fastSpeedRadPerSec = 1; // fast rotation while dollying
+    const slowSpeedRadPerSec = 0.02; // gentle rotation afterward
+    const currentSpeed = fastSpeedRadPerSec * (1 - t) + slowSpeedRadPerSec * t;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += currentSpeed * delta;
+    }
+    // Keep frames coming in demand mode while we rotate
+    invalidate();
+  });
 
   return (
     <mesh>
@@ -121,8 +226,10 @@ const Computers = ({ isMobile, onFirstPrepared }) => {
       <pointLight intensity={2} />
 
       <group
-        scale={isMobile ? 0.7 : 0.75}
+        ref={groupRef}
+        scale={isMobile ? 0.7 : 1}
         position={isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5]}
+        rotation={[0, (Math.PI / 2) * 3, 0]} 
       >
         {layerPaths.slice(0, visibleLayers).map((path, index) => (
           <Suspense key={path} fallback={null}>
@@ -141,6 +248,9 @@ const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [overlayOpacity, setOverlayOpacity] = useState(1);
   const overlayStartRef = useRef(null);
+  const [dollyStart, setDollyStart] = useState(false);
+  const controlsRef = useRef(null);
+  const dollyProgressRef = useRef(1); // eased progress of dolly [0..1]
 
   useEffect(() => {
     // Add a listener for changes to the screen size
@@ -175,6 +285,7 @@ const ComputersCanvas = () => {
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
+    setDollyStart(true);
   };
 
   return (
@@ -182,12 +293,13 @@ const ComputersCanvas = () => {
       <Canvas
         frameloop="demand"
         shadows
-        dpr={[0.6, 1]}
+        dpr={[0.8, 1.2]}
         camera={{ position: [20, 3, 5], fov: 25 }}
         gl={{ antialias: false, powerPreference: "high-performance" }}
       >
         <Suspense fallback={<CanvasLoader />}>
           <OrbitControls
+            ref={controlsRef}
             enableZoom={false}
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={Math.PI / 2}
@@ -197,7 +309,18 @@ const ComputersCanvas = () => {
               <AdaptiveDpr pixelated />
             </PerformanceMonitor>
           )}
-          <Computers isMobile={isMobile} onFirstPrepared={startOverlayFade} />
+          <Computers
+            isMobile={isMobile}
+            onFirstPrepared={startOverlayFade}
+            dollyProgressRef={dollyProgressRef}
+          />
+          <CameraDolly
+            start={dollyStart}
+            durationSec={3}
+            finalPosition={[20, 3, 5]}
+            controlsRef={controlsRef}
+            progressRef={dollyProgressRef}
+          />
         </Suspense>
       </Canvas>
       <div
