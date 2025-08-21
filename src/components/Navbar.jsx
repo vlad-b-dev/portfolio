@@ -12,38 +12,54 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop > 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 5);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`${
-        styles.paddingX
-      } w-full flex items-center py-4 fixed top-0 z-20 bg-primary ${
-        scrolled ? "bg-primary" : "bg-transparent"
-      }`}
+      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-20 transition-colors duration-300 ${scrolled
+        ? "bg-primary/60 backdrop-blur-md"
+        : "bg-transparent"
+        }`}
     >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto flex items-center justify-between relative">
+        <div className="sm:hidden flex w-full items-center relative">
+          <img
+            src={toggle ? close : menu}
+            alt="menu"
+            className="w-7 h-7 mb-1 object-contain"
+            onClick={() => setToggle(!toggle)}
+          />
+          <Link
+            to="/"
+            onClick={() => window.scrollTo(0, 0)}
+            className="absolute left-1/2 transform -translate-x-1/2"
+          >
+            <img src={logo} alt="logo" className="w-38 max-w-full h-auto object-contain" />
+          </Link>
+
+          <p className="ml-auto text-white text-[3.25vw] font-bold cursor-pointer whitespace-nowrap mb-1 -mr-1">
+            Full Stack <br /> Developer
+          </p>
+        </div>
+
         <Link
           to="/"
-          className="flex items-center gap-2"
+          className="hidden sm:flex items-center gap-2"
           onClick={() => {
             setActive("");
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="logo" className="w-1/4 object-contain" />
-          <p className="text-white text-[14px] font-bold cursor-pointer flex ">
+          <img
+            src={logo}
+            alt="logo"
+            className="sm:w-1/4 w-2/5 object-contain"
+          />
+          <p className="text-white text-sm md:text-lg font-bold cursor-pointer flex">
             Full Stack Developer
             <span className="sm:block hidden">
               <span className="text-secondary"> &nbsp; | </span>UX-UI Expert
@@ -66,19 +82,13 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="sm:hidden flex flex-basis justify-end items-center">
-          <img
-            src={toggle ? close : menu}
-            alt="menu"
-            className="w-[60px] h-[60px] object-contain"
-            onClick={() => setToggle(!toggle)}
-          />
+        <div className="sm:hidden flex flex-shrink-0">
           <div
             className={`${
               !toggle ? "hidden" : "flex"
-            } p-6 black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] z-10 rounded-xl`}
+              } p-6 black-gradient absolute top-20 left-0 mx-0 -my-5 min-w-[140px] z-10 rounded-xl flex-col`}
           >
-            <ul className="list-none flex justify-end items-start flex-1 flex-col gap-4">
+            <ul className="list-none flex flex-col gap-4">
               {navLinks.map((nav) => (
                 <li
                   key={nav.id}
@@ -86,7 +96,7 @@ const Navbar = () => {
                     active === nav.title ? "text-white" : "text-secondary"
                   }`}
                   onClick={() => {
-                    setToggle(!toggle);
+                    setToggle(false);
                     setActive(nav.title);
                   }}
                 >

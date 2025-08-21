@@ -196,18 +196,29 @@ const CameraDolly = ({
 const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
   const [visibleLayers] = useState(LAYER_PATHS.length);
   const groupRef = useRef();
+  const pointLightRef = useRef();
+  const lightProgressRef = useRef(0);
   const { invalidate } = useThree();
 
   const mobileConfig = useMemo(
     () => ({
-      scale: isMobile ? 0.5 : 0.9,
-      position: isMobile ? [0, -3, -2.2] : [0, -3.25, -1.5],
+      scale: 0.9,
+      position: isMobile ? [0, -3, -1] : [0, -3.25, -1.5],
       rotation: [0, (Math.PI / 2) * 3, 0],
     }),
     [isMobile]
   );
 
   useFrame((_, delta) => {
+    if (pointLightRef.current && lightProgressRef.current < 1) {
+      lightProgressRef.current = Math.min(
+        1,
+        lightProgressRef.current + delta / 10
+      );
+      const t = easeInOutCubic(lightProgressRef.current);
+      pointLightRef.current.intensity = 22 * t;
+    }
+
     const t = Math.min(1, Math.max(0, dollyProgressRef?.current ?? 1));
     const currentSpeed =
       ROTATION_SPEEDS.fast * (1 - t) + ROTATION_SPEEDS.slow * t;
@@ -221,16 +232,20 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 
   return (
     <mesh>
-      <hemisphereLight intensity={4} groundColor="blue" />
+      <hemisphereLight intensity={1.5} groundColor="green" />
       <spotLight
-        position={[20, 50, 10]}
-        angle={0.12}
-        penumbra={1}
-        intensity={2}
+        position={[20, 50, 50]}
+        angle={1.5}
+        penumbra={0.5}
+        intensity={2.5}
         castShadow
-        shadow-mapSize={512}
+        shadow-mapSize={524}
       />
-      <pointLight intensity={2} />
+      <pointLight
+        ref={pointLightRef}
+        intensity={0}
+        color="#84ffe9"
+      />
 
       <group
         ref={groupRef}
@@ -312,9 +327,9 @@ const CityCanvas = () => {
       <Canvas
         frameloop="demand"
         shadows
-        dpr={[0.8, 1.2]}
+        dpr={[0.7, 1.2]}
         camera={{ position: INITIAL_CAMERA_POSITION, fov: 25 }}
-        gl={{ antialias: false, powerPreference: "high-performance" }}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={<CanvasLoader />}>
           <OrbitControls
