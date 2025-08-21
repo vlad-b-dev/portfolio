@@ -17,13 +17,13 @@ import {
 import { Vector3 } from "three";
 import CanvasLoader from "../Loader";
 
-const LAYER_PATHS = [
-  "./city/city-layer-2.glb",
-  "./city/city-layer-3.glb",
+const LAYER_PATHS = [  
   "./city/city-layer-4.glb",
+  "./city/city-layer-1.glb",
   "./city/city-layer-5.glb",
   "./city/city-layer-6.glb",
-  "./city/city-layer-1.glb",
+  "./city/city-layer-2.glb",
+  "./city/city-layer-3.glb",
 ];
 
 const FADE_DURATION = 1.2;
@@ -202,8 +202,8 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 
   const mobileConfig = useMemo(
     () => ({
-      scale: isMobile ? 0.9 : 1.1,
-      position: isMobile ? [0, -2.8, -1] : [0, -3.25, -1.5],
+      scale: isMobile ? 1.1 : 1.6,
+      position: isMobile ? [0, -3, -1] : [0, -4, -2.5],
       rotation: [0, (Math.PI / 2) * 3, 0],
     }),
     [isMobile]
@@ -232,18 +232,19 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 
   return (
     <mesh>
-      <hemisphereLight intensity={0.85} groundColor="green" />
+      <hemisphereLight intensity={1} groundColor="#84ffe9" />
       <spotLight
-        position={[20, 50, 50]}
-        angle={1.5}
-        penumbra={0.5}
-        intensity={2.5}
+        angle={Math.PI}
+        penumbra={5}
+        intensity={50}
         castShadow
+        color={"#84ffe9"}
         shadow-mapSize={524}
       />
       <pointLight
         ref={pointLightRef}
-        intensity={0}
+        intensity={10}
+
         color="#84ffe9"
       />
 
@@ -335,8 +336,8 @@ const CityCanvas = () => {
           <OrbitControls
             ref={controlsRef}
             enableZoom={false}
-            maxPolarAngle={Math.PI / 2}
-            minPolarAngle={Math.PI / 2}
+            maxPolarAngle={isMobile ? Math.PI / 2.2 : Math.PI / 1.9}
+            minPolarAngle={isMobile ? Math.PI / 2.2 : Math.PI / 1.9}
           />
           {overlayOpacity === 0 && (
             <PerformanceMonitor onDecline={() => {}}>
