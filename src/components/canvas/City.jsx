@@ -18,16 +18,16 @@ import { Vector3 } from "three";
 import CanvasLoader from "../Loader";
 
 const LAYER_PATHS = [
-  "./city/city-layer-1.glb",
   "./city/city-layer-2.glb",
   "./city/city-layer-3.glb",
   "./city/city-layer-4.glb",
   "./city/city-layer-5.glb",
   "./city/city-layer-6.glb",
+  "./city/city-layer-1.glb",
 ];
 
 const FADE_DURATION = 1.2;
-const DOLLY_DURATION = 3;
+const DOLLY_DURATION = 3.5;
 const OVERLAY_FADE_DURATION = 500;
 const INITIAL_CAMERA_POSITION = [20, 3, 5];
 const FINAL_CAMERA_POSITION = [20, 3, 5];
@@ -202,8 +202,8 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 
   const mobileConfig = useMemo(
     () => ({
-      scale: 0.9,
-      position: isMobile ? [0, -3, -1] : [0, -3.25, -1.5],
+      scale: isMobile ? 0.9 : 1.1,
+      position: isMobile ? [0, -2.8, -1] : [0, -3.25, -1.5],
       rotation: [0, (Math.PI / 2) * 3, 0],
     }),
     [isMobile]
@@ -232,7 +232,7 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 
   return (
     <mesh>
-      <hemisphereLight intensity={1.5} groundColor="green" />
+      <hemisphereLight intensity={0.85} groundColor="green" />
       <spotLight
         position={[20, 50, 50]}
         angle={1.5}
@@ -327,7 +327,7 @@ const CityCanvas = () => {
       <Canvas
         frameloop="demand"
         shadows
-        dpr={[0.7, 1.2]}
+        dpr={[0.6, 0.9]}
         camera={{ position: INITIAL_CAMERA_POSITION, fov: 25 }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
       >
