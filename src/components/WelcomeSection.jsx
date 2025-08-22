@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { CityCanvas } from "./canvas";
+import { DynamicText } from ".";
 
 const WelcomeSection = () => {
   return (
@@ -19,10 +20,11 @@ const WelcomeSection = () => {
             Hi, I'm <span className="text-[#84ffe9]">Vlad</span>
           </h1>
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
-            Engineer at hearth,
+            Software engineer,
             <br className="sm:block hidden" /> pasionate of desgin and
             developing
           </p>
+          <DynamicText />
         </div>
       </div>
       <CityCanvas />

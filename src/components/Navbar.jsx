@@ -101,8 +101,8 @@ const Navbar = () => {
           <p className="text-white text-sm md:text-lg font-bold cursor-pointer flex">
             Full Stack Developer
             <span className="sm:block hidden">
-              <span className="text-secondary"> &nbsp; | </span>UX-UI Expert
-              <span className="text-secondary"> | </span>Graphic Designer
+              <span className="text-secondary"> &nbsp; | </span>UX-UI
+              <span className="text-secondary"> | </span>Graphic Design
             </span>
           </p>
         </Link>

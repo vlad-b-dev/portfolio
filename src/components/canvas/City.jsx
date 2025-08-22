@@ -32,7 +32,7 @@ const OVERLAY_FADE_DURATION = 500;
 const INITIAL_CAMERA_POSITION = [20, 3, 5];
 const FINAL_CAMERA_POSITION = [20, 3, 5];
 const DOLLY_START_MULTIPLIER = 1.5;
-const ROTATION_SPEEDS = { fast: 1, slow: 0.02 };
+const ROTATION_SPEEDS = { fast: 1, slow: 0.025 };
 const MOBILE_BREAKPOINT = 500;
 
 const easeInOutCubic = (x) =>
@@ -336,8 +336,8 @@ const CityCanvas = () => {
           <OrbitControls
             ref={controlsRef}
             enableZoom={false}
-            maxPolarAngle={isMobile ? Math.PI / 2.2 : Math.PI / 1.9}
-            minPolarAngle={isMobile ? Math.PI / 2.2 : Math.PI / 1.9}
+            maxPolarAngle={isMobile ? (Math.PI / 2.2) : (Math.PI / 2)}
+            minPolarAngle={isMobile ? (Math.PI / 2.2) : (Math.PI / 2)}
           />
           {overlayOpacity === 0 && (
             <PerformanceMonitor onDecline={() => {}}>
