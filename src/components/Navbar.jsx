@@ -1,53 +1,70 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
-import { motion, AnimatePresence } from "framer-motion";
 
+// === Variants ===
+const menuVariants = {
+	hidden: { opacity: 0, x: -60 },
+	visible: { opacity: 1, x: 0 },
+	exit: { opacity: 0, x: -60 },
+};
+
+const mobileLinkVariants = {
+	hidden: { opacity: 0, x: -20, rotate: -5, scale: 0.95 },
+	visible: { opacity: 1, x: 0, rotate: 0, scale: 1 },
+};
+
+const iconVariants = {
+	hidden: (direction) => ({
+		opacity: 0,
+		rotate: direction === "open" ? 90 : -90,
+	}),
+	visible: { opacity: 1, rotate: 0 },
+	exit: (direction) => ({
+		opacity: 0,
+		rotate: direction === "open" ? -90 : 90,
+	}),
+};
+
+// === Component ===
 const Navbar = () => {
 	const [active, setActive] = useState("");
 	const [toggle, setToggle] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const toggleMenu = useRef(null);
 
+	// Scroll listener
 	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 5);
-		};
+		const handleScroll = () => setScrolled(window.scrollY > 5);
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	// Click outside to close mobile menu
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (toggleMenu.current && !toggleMenu.current.contains(event.target)) {
+		const handleClickOutside = (e) => {
+			if (toggleMenu.current && !toggleMenu.current.contains(e.target)) {
 				setToggle(false);
 			}
 		};
-
-		if (toggle) {
-			document.addEventListener("mousedown", handleClickOutside);
-		} else {
-			document.removeEventListener("mousedown", handleClickOutside);
-		}
-
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
+		if (toggle) document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [toggle]);
 
 	return (
 		<>
-			{/* Navbar */}
+			{/* === Navbar === */}
 			<nav
-				className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-20 transition-colors duration-300 ${
-					scrolled ? "bg-primary/60 backdrop-blur-md" : "bg-transparent"
-				}`}
+				className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-20 
+          transition-colors duration-300 
+          ${scrolled ? "bg-primary/60 backdrop-blur-md" : "bg-transparent"}`}
 			>
 				<div className="w-full max-w-7xl mx-auto flex items-center justify-between relative">
-					{/* Mobile Menu & Logo */}
+					{/* === Mobile Menu & Logo === */}
 					<div className="sm:hidden flex w-full items-center relative">
 						<AnimatePresence mode="wait" initial={false}>
 							{toggle ? (
@@ -55,24 +72,28 @@ const Navbar = () => {
 									key="close"
 									src={close}
 									alt="close"
-									className="w-7 h-7 mb-1 object-contain"
-									initial={{ opacity: 0, rotate: -90 }}
-									animate={{ opacity: 1, rotate: 0 }}
-									exit={{ opacity: 0, rotate: 90 }}
+									className="w-7 h-7 mb-1 object-contain cursor-pointer"
+									custom="close"
+									variants={iconVariants}
+									initial="hidden"
+									animate="visible"
+									exit="exit"
 									transition={{ duration: 0.15 }}
-									onClick={() => setToggle(!toggle)}
+									onClick={() => setToggle(false)}
 								/>
 							) : (
 								<motion.img
 									key="menu"
 									src={menu}
 									alt="menu"
-									className="w-7 h-7 mb-1 object-contain"
-									initial={{ opacity: 0, rotate: 90 }}
-									animate={{ opacity: 1, rotate: 0 }}
-									exit={{ opacity: 0, rotate: -90 }}
+									className="w-7 h-7 mb-1 object-contain cursor-pointer"
+									custom="open"
+									variants={iconVariants}
+									initial="hidden"
+									animate="visible"
+									exit="exit"
 									transition={{ duration: 0.15 }}
-									onClick={() => setToggle(!toggle)}
+									onClick={() => setToggle(true)}
 								/>
 							)}
 						</AnimatePresence>
@@ -85,7 +106,7 @@ const Navbar = () => {
 							<img
 								src={logo}
 								alt="logo"
-								className="w-38 max-w-full h-auto object-contain"
+								className="w-36 max-w-full h-auto object-contain"
 							/>
 						</Link>
 
@@ -94,7 +115,7 @@ const Navbar = () => {
 						</p>
 					</div>
 
-					{/* Desktop Logo */}
+					{/* === Desktop Logo === */}
 					<Link
 						to="/"
 						className="hidden sm:flex items-center gap-2"
@@ -108,16 +129,12 @@ const Navbar = () => {
 							alt="logo"
 							className="sm:w-1/4 w-2/5 object-contain"
 						/>
-						<p className="text-white text-sm md:text-lg font-bold cursor-pointer flex">
+						<p className="text-white text-sm md:text-2xl font-bold cursor-pointer flex">
 							Full Stack Developer
-							<span className="sm:block hidden">
-								<span className="text-secondary"> &nbsp; | </span>UX-UI
-								<span className="text-secondary"> | </span>Graphic Design
-							</span>
 						</p>
 					</Link>
 
-					{/* Desktop Links */}
+					{/* === Desktop Nav Links === */}
 					<ul className="list-none hidden sm:flex flex-row gap-10">
 						{navLinks.map((nav) => (
 							<li
@@ -134,14 +151,15 @@ const Navbar = () => {
 				</div>
 			</nav>
 
-			{/* Mobile Toggle Menu - OUTSIDE nav to fix blur */}
+			{/* === Mobile Dropdown Menu === */}
 			<AnimatePresence>
 				{toggle && (
 					<motion.div
 						ref={toggleMenu}
-						initial={{ opacity: 0, x: -60 }}
-						animate={{ opacity: 1, x: 0 }}
-						exit={{ opacity: 0, x: -60 }}
+						variants={menuVariants}
+						initial="hidden"
+						animate="visible"
+						exit="exit"
 						transition={{ type: "spring", stiffness: 300, damping: 25 }}
 						className="p-6 bg-primary/60 backdrop-blur-md fixed top-20 left-0 min-w-10 z-30 rounded-xl flex-col flex"
 					>
@@ -159,22 +177,15 @@ const Navbar = () => {
 							{navLinks.map((nav) => (
 								<motion.li
 									key={nav.id}
-									className={` font-medium cursor-pointer text-xl ${
+									className={`font-medium cursor-pointer text-xl ${
 										active === nav.title ? "text-white" : "text-secondary"
 									}`}
 									onClick={() => {
 										setToggle(false);
 										setActive(nav.title);
 									}}
-									variants={{
-										hidden: { opacity: 0, x: -20, rotate: -5, scale: 0.95 },
-										visible: { opacity: 1, x: 0, rotate: 0, scale: 1 },
-									}}
-									transition={{
-										type: "spring",
-										stiffness: 400,
-										damping: 25,
-									}}
+									variants={mobileLinkVariants}
+									transition={{ type: "spring", stiffness: 400, damping: 25 }}
 								>
 									<a href={`#${nav.id}`}>{nav.title}</a>
 								</motion.li>
