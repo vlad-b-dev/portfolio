@@ -1,8 +1,4 @@
 import logo from "./logo.webp";
-import backend from "./backend.png";
-import creator from "./creator.png";
-import mobile from "./mobile.png";
-import web from "./web.png";
 import github from "./github.png";
 import menu from "./menu.svg";
 import close from "./close.svg";
@@ -30,33 +26,42 @@ import carrent from "./carrent.png";
 import jobit from "./jobit.png";
 import tripguide from "./tripguide.png";
 
+import web3d from "./web3d.webp";
+import agileScrum from "./agileScrum.webp";
+import fullStack from "./fullStack.webp";
+import graphicDesign from "./graphicDesign.webp";
+import modernFrameworks from "./modernFrameworks.webp";
+import qaAndTesting from "./qaAndTesting.webp";
+
 export {
-  logo,
-  backend,
-  creator,
-  mobile,
-  web,
-  github,
-  menu,
-  close,
-  css,
-  docker,
-  figma,
-  git,
-  html,
-  javascript,
-  mongodb,
-  nodejs,
-  reactjs,
-  redux,
-  tailwind,
-  typescript,
-  threejs,
-  meta,
-  shopify,
-  starbucks,
-  tesla,
-  carrent,
-  jobit,
-  tripguide,
+	logo,
+	github,
+	menu,
+	close,
+	css,
+	docker,
+	figma,
+	git,
+	html,
+	javascript,
+	mongodb,
+	nodejs,
+	reactjs,
+	redux,
+	tailwind,
+	typescript,
+	threejs,
+	meta,
+	shopify,
+	starbucks,
+	tesla,
+	carrent,
+	jobit,
+	tripguide,
+	web3d,
+	agileScrum,
+	fullStack,
+	graphicDesign,
+	modernFrameworks,
+	qaAndTesting,
 };

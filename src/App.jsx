@@ -19,12 +19,12 @@ const App = () => {
 					<WelcomeSection />
 				</div>
 				<About />
-				<Works />
+				{/* <Works />
 				<Feedbacks />
 				<div className="relative z-10">
 					<Contact />
 					<StarsCanvas />
-				</div>
+				</div> */}
 			</div>
 		</BrowserRouter>
 	);

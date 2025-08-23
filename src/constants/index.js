@@ -1,8 +1,4 @@
 import {
-	mobile,
-	backend,
-	creator,
-	web,
 	javascript,
 	typescript,
 	html,
@@ -23,6 +19,12 @@ import {
 	jobit,
 	tripguide,
 	threejs,
+	fullStack,
+	agileScrum,
+	web3d,
+	qaAndTesting,
+	graphicDesign,
+	modernFrameworks,
 } from "../assets";
 
 export const navLinks = [
@@ -42,28 +44,28 @@ export const navLinks = [
 
 const habilities = [
 	{
-		title: "Full stack development",
-		icon: web,
+		title: "Full-stack development",
+		icon: fullStack,
 	},
 	{
-		title: "Agile and Scrum",
-		icon: creator,
+		title: "Scrum-Agile",
+		icon: agileScrum,
 	},
 	{
 		title: "Modern frameworks",
-		icon: creator,
+		icon: modernFrameworks,
 	},
 	{
 		title: "UX-UI and 3D Web",
-		icon: mobile,
+		icon: web3d,
 	},
 	{
-		title: "Code quality",
-		icon: backend,
+		title: "QA and Testing",
+		icon: qaAndTesting,
 	},
 	{
 		title: "Graphic design",
-		icon: backend,
+		icon: graphicDesign,
 	},
 ];
 

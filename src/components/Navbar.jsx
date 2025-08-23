@@ -6,7 +6,6 @@ import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
 
-// === Variants ===
 const menuVariants = {
 	hidden: { opacity: 0, x: -60 },
 	visible: { opacity: 1, x: 0 },
@@ -30,21 +29,29 @@ const iconVariants = {
 	}),
 };
 
-// === Component ===
 const Navbar = () => {
 	const [active, setActive] = useState("");
 	const [toggle, setToggle] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
+
 	const toggleMenu = useRef(null);
+	const glowRef = useRef(null);
+	const navRef = useRef(null);
+
+	const rafRef = useRef(0);
+	const posRef = useRef({ x: 0 });
+	const targetRef = useRef({ x: 0 });
+	const insideRef = useRef(false);
 
 	// Scroll listener
 	useEffect(() => {
-		const handleScroll = () => setScrolled(window.scrollY > 5);
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
+		const onScroll = () => setScrolled(window.scrollY > 5);
+		onScroll();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
-	// Click outside to close mobile menu
+	// Click outside mobile menu
 	useEffect(() => {
 		const handleClickOutside = (e) => {
 			if (toggleMenu.current && !toggleMenu.current.contains(e.target)) {
@@ -55,16 +62,90 @@ const Navbar = () => {
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [toggle]);
 
+	// Glow effect
+	useEffect(() => {
+		if (!glowRef.current || !navRef.current) return;
+
+		const glow = glowRef.current;
+		const nav = navRef.current;
+		const lerp = (a, b, t) => a + (b - a) * t;
+		const SMOOTH = 0.5;
+
+		let fadeTimeout = null;
+
+		const updateGlow = () => {
+			posRef.current.x = lerp(posRef.current.x, targetRef.current.x, SMOOTH);
+
+			if (insideRef.current && scrolled) {
+				const centerY = nav.offsetHeight / 2;
+				glow.style.background = `radial-gradient(
+          30vw 30vw at ${posRef.current.x}px ${centerY}px,
+          rgba(132,255,233,0.22) 0%,
+          rgba(132,255,233,0.14) 40%,
+          rgba(132,255,233,0.06) 70%,
+          rgba(132,255,233,0) 100%
+        )`;
+				rafRef.current = requestAnimationFrame(updateGlow);
+			} else {
+				rafRef.current = 0;
+			}
+		};
+
+		const handleMouseEnter = (e) => {
+			if (!scrolled) return;
+			insideRef.current = true;
+
+			const x = e.clientX - nav.getBoundingClientRect().left;
+			posRef.current.x = x;
+			targetRef.current.x = x;
+
+			glow.style.transition = "opacity 2s ease-out";
+			glow.style.opacity = 0.6;
+
+			if (!rafRef.current) rafRef.current = requestAnimationFrame(updateGlow);
+		};
+
+		const handleMouseMove = (e) => {
+			if (!insideRef.current || !scrolled) return;
+			targetRef.current.x = e.clientX - nav.getBoundingClientRect().left;
+			if (!rafRef.current) rafRef.current = requestAnimationFrame(updateGlow);
+		};
+
+		const handleMouseLeave = () => {
+			insideRef.current = false;
+			glow.style.transition = "opacity 1s ease-out";
+			glow.style.opacity = 0;
+		};
+
+		nav.addEventListener("mouseenter", handleMouseEnter);
+		nav.addEventListener("mousemove", handleMouseMove);
+		nav.addEventListener("mouseleave", handleMouseLeave);
+
+		return () => {
+			nav.removeEventListener("mouseenter", handleMouseEnter);
+			nav.removeEventListener("mousemove", handleMouseMove);
+			nav.removeEventListener("mouseleave", handleMouseLeave);
+			if (rafRef.current) cancelAnimationFrame(rafRef.current);
+			clearTimeout(fadeTimeout);
+		};
+	}, [scrolled]);
+
 	return (
 		<>
-			{/* === Navbar === */}
 			<nav
-				className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-20 
-          transition-colors duration-300 
+				ref={navRef}
+				className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-20
+          transition-colors duration-300
           ${scrolled ? "bg-primary/60 backdrop-blur-md" : "bg-transparent"}`}
 			>
+				{/* Glow layer */}
+				<div
+					ref={glowRef}
+					className="absolute inset-0 pointer-events-none rounded-md opacity-0"
+					style={{ willChange: "background, opacity" }}
+				/>
+
 				<div className="w-full max-w-7xl mx-auto flex items-center justify-between relative">
-					{/* === Mobile Menu & Logo === */}
 					<div className="sm:hidden flex w-full items-center relative">
 						<AnimatePresence mode="wait" initial={false}>
 							{toggle ? (
@@ -115,7 +196,6 @@ const Navbar = () => {
 						</p>
 					</div>
 
-					{/* === Desktop Logo === */}
 					<Link
 						to="/"
 						className="hidden sm:flex items-center gap-2"
@@ -124,24 +204,17 @@ const Navbar = () => {
 							window.scrollTo(0, 0);
 						}}
 					>
-						<img
-							src={logo}
-							alt="logo"
-							className="sm:w-1/4 w-2/5 object-contain"
-						/>
+						<img src={logo} alt="logo" className="sm:w-1/4 w-2/5 object-contain" />
 						<p className="text-white text-sm md:text-2xl font-bold cursor-pointer flex">
 							Full Stack Developer
 						</p>
 					</Link>
 
-					{/* === Desktop Nav Links === */}
 					<ul className="list-none hidden sm:flex flex-row gap-10">
 						{navLinks.map((nav) => (
 							<li
 								key={nav.id}
-								className={`${
-									active === nav.title ? "text-white" : "text-secondary"
-								} hover:text-white text-[14px] font-medium cursor-pointer`}
+								className={`${active === nav.title ? "text-white" : "text-secondary"} hover:text-white text-[14px] font-medium cursor-pointer`}
 								onClick={() => setActive(nav.title)}
 							>
 								<a href={`#${nav.id}`}>{nav.title}</a>
@@ -151,7 +224,6 @@ const Navbar = () => {
 				</div>
 			</nav>
 
-			{/* === Mobile Dropdown Menu === */}
 			<AnimatePresence>
 				{toggle && (
 					<motion.div
@@ -169,17 +241,14 @@ const Navbar = () => {
 							animate="visible"
 							exit="hidden"
 							variants={{
-								visible: {
-									transition: { staggerChildren: 0.18, delayChildren: 0.1 },
-								},
+								visible: { transition: { staggerChildren: 0.18, delayChildren: 0.1 } },
 							}}
 						>
 							{navLinks.map((nav) => (
 								<motion.li
 									key={nav.id}
-									className={`font-medium cursor-pointer text-xl ${
-										active === nav.title ? "text-white" : "text-secondary"
-									}`}
+									className={`font-medium cursor-pointer text-xl ${active === nav.title ? "text-white" : "text-secondary"
+										}`}
 									onClick={() => {
 										setToggle(false);
 										setActive(nav.title);
