@@ -48,10 +48,6 @@ const habilities = [
 		icon: fullStack,
 	},
 	{
-		title: "Scrum-Agile",
-		icon: agileScrum,
-	},
-	{
 		title: "Modern frameworks",
 		icon: modernFrameworks,
 	},
@@ -66,6 +62,9 @@ const habilities = [
 	{
 		title: "Graphic design",
 		icon: graphicDesign,
+	},	{
+		title: "Scrum-Agile",
+		icon: agileScrum,
 	},
 ];
 
