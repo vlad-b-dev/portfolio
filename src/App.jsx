@@ -1,14 +1,25 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Navbar, WelcomeSection } from "./components";
 
-import {
-	Feedbacks,
-	WelcomeSection,
-	Navbar,
-	StarsCanvas,
-	About,
-	Works,
-	Contact,
-} from "./components";
+
+const About = lazy(() =>
+	import("./components").then((m) => ({ default: m.About }))
+);
+const Feedbacks = lazy(() =>
+	import("./components").then((m) => ({ default: m.Feedbacks }))
+);
+const Contact = lazy(() =>
+	import("./components").then((m) => ({ default: m.Contact }))
+);
+const StarsCanvas = lazy(() =>
+	import("./components").then((m) => ({ default: m.StarsCanvas }))
+);
+
+
+const SectionFallback = ({ h = "60vh" }) => (
+	<div style={{ minHeight: h }} aria-hidden="true" />
+);
 
 const App = () => {
 	return (
@@ -18,13 +29,25 @@ const App = () => {
 					<Navbar />
 					<WelcomeSection />
 				</div>
-				<About />
-				{/* <Works />
-				<Feedbacks />
-				<div className="relative z-10">
-					<Contact />
-					<StarsCanvas />
-				</div> */}
+
+				<Suspense fallback={<SectionFallback h="60vh" />}>
+					<About />
+				</Suspense>
+
+				<Suspense fallback={<SectionFallback h="60vh" />}>
+					<Feedbacks />
+				</Suspense>
+
+				{/*
+        <div className="relative z-10">
+          <Suspense fallback={<SectionFallback h="80vh" />}>
+            <Contact />
+          </Suspense>
+          <Suspense fallback={null}>
+            <StarsCanvas />
+          </Suspense>
+        </div>
+        */}
 			</div>
 		</BrowserRouter>
 	);

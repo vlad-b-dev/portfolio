@@ -25,6 +25,12 @@
 	background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.blue-green-gradient {
+	background: #2c9171; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to bottom, #84ffe9, #0a1216); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #84ffe9, #0a1216); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .blue-gradient {
 	background: #84ffe9;
 	background: linear-gradient(-90deg, #84ffe9 0%, rgba(60, 51, 80, 0) 100%);

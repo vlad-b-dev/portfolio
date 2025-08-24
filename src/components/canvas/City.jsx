@@ -15,6 +15,7 @@ import {
 	PerformanceMonitor,
 } from "@react-three/drei";
 import { Vector3 } from "three";
+import { useInView } from "react-intersection-observer";
 import CanvasLoader from "../Loader";
 
 /* ---------- Constants ---------- */
@@ -28,7 +29,7 @@ const LAYER_PATHS = [
 ];
 
 const FADE_DURATION = 1.2;
-const DOLLY_DURATION = 3.5;
+const DOLLY_DURATION = 4.5;
 const OVERLAY_FADE_DURATION = 500;
 const INITIAL_CAMERA_POSITION = [20, 3, 5];
 const FINAL_CAMERA_POSITION = [20, 3, 5];
@@ -36,8 +37,7 @@ const DOLLY_START_MULTIPLIER = 1.5;
 const ROTATION_SPEEDS = { fast: 1, slow: 0.025 };
 const MOBILE_BREAKPOINT = 500;
 
-const easeInOutCubic = (x) =>
-	x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const easeInOutSine = (x) => -(Math.cos(Math.PI * x) - 1) / 2;
 
 /* ---------- CityLayer ---------- */
 const CityLayer = ({ path, onPrepared }) => {
@@ -89,9 +89,9 @@ const CityLayer = ({ path, onPrepared }) => {
 
 		progressRef.current = Math.min(
 			1,
-			progressRef.current + delta / FADE_DURATION,
+			progressRef.current + delta / FADE_DURATION
 		);
-		const t = easeInOutCubic(progressRef.current);
+		const t = easeInOutSine(progressRef.current);
 
 		materialsRef.current.forEach((material) => {
 			const target = originalOpacityRef.current.get(material) || 1;
@@ -114,6 +114,7 @@ const CameraDolly = ({
 	finalPosition = FINAL_CAMERA_POSITION,
 	controlsRef,
 	progressRef,
+	onFinish,
 }) => {
 	const { camera, invalidate } = useThree();
 	const hasStartedRef = useRef(false);
@@ -166,9 +167,9 @@ const CameraDolly = ({
 		const duration = Math.max(0.001, durationSec);
 		localProgressRef.current = Math.min(
 			1,
-			localProgressRef.current + delta / duration,
+			localProgressRef.current + delta / duration
 		);
-		const t = easeInOutCubic(localProgressRef.current);
+		const t = easeInOutSine(localProgressRef.current);
 
 		if (progressRef) progressRef.current = t;
 
@@ -184,6 +185,8 @@ const CameraDolly = ({
 
 			if (controlsRef.current) controlsRef.current.enabled = true;
 			if (progressRef) progressRef.current = 1;
+
+			if (onFinish) onFinish();
 		}
 
 		invalidate();
@@ -205,17 +208,17 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 			position: isMobile ? [0, -3, -1] : [0, -4, -2.5],
 			rotation: [0, (Math.PI / 2) * 3, 0],
 		}),
-		[isMobile],
+		[isMobile]
 	);
 
 	useFrame((_, delta) => {
 		if (pointLightRef.current && lightProgressRef.current < 1) {
 			lightProgressRef.current = Math.min(
 				1,
-				lightProgressRef.current + delta / 12,
+				lightProgressRef.current + delta / 12
 			);
 			pointLightRef.current.intensity =
-				22 * easeInOutCubic(lightProgressRef.current);
+				22 * easeInOutSine(lightProgressRef.current);
 		}
 
 		const t = Math.min(1, Math.max(0, dollyProgressRef?.current ?? 1));
@@ -238,7 +241,7 @@ const City = ({ isMobile, onFirstPrepared, dollyProgressRef }) => {
 				intensity={30}
 				castShadow
 				color="#84ffe9"
-				shadow-mapSize={524}
+				shadow-mapSize={14}
 			/>
 			<pointLight ref={pointLightRef} intensity={15} color="white" />
 
@@ -261,14 +264,20 @@ const CityCanvas = () => {
 	const [isMobile, setIsMobile] = useState(false);
 	const [overlayOpacity, setOverlayOpacity] = useState(1);
 	const [dollyStart, setDollyStart] = useState(false);
+	const [hasPlayedIntro, setHasPlayedIntro] = useState(false);
 
 	const overlayStartRef = useRef(null);
 	const controlsRef = useRef(null);
 	const dollyProgressRef = useRef(1);
 
+	const { ref, inView } = useInView({
+		threshold: 0.1,
+		triggerOnce: false,
+	});
+
 	const mediaQuery = useMemo(
 		() => window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`),
-		[],
+		[]
 	);
 
 	useEffect(() => {
@@ -279,21 +288,23 @@ const CityCanvas = () => {
 	}, [mediaQuery]);
 
 	const startOverlayFade = useCallback(() => {
-		if (overlayStartRef.current !== null) return;
+		if (overlayStartRef.current !== null || hasPlayedIntro) return;
 
 		overlayStartRef.current = performance.now();
 		const step = (now) => {
 			const t = Math.min(
 				1,
-				(now - overlayStartRef.current) / OVERLAY_FADE_DURATION,
+				(now - overlayStartRef.current) / OVERLAY_FADE_DURATION
 			);
-			setOverlayOpacity(1 - easeInOutCubic(t));
-			if (t < 1) requestAnimationFrame(step);
+			setOverlayOpacity(1 - easeInOutSine(t));
+			if (t < 1) {
+				requestAnimationFrame(step);
+			}
 		};
 
 		requestAnimationFrame(step);
 		setDollyStart(true);
-	}, []);
+	}, [hasPlayedIntro]);
 
 	const overlayStyles = useMemo(
 		() => ({
@@ -304,15 +315,15 @@ const CityCanvas = () => {
 			opacity: overlayOpacity,
 			zIndex: 9999,
 		}),
-		[overlayOpacity],
+		[overlayOpacity]
 	);
 
 	return (
-		<>
+		<div ref={ref} style={{ height: "100vh", width: "100%" }}>
 			<Canvas
-				frameloop="demand"
+				frameloop={inView ? "always" : "never"}
 				shadows
-				dpr={[0.6, 0.9]}
+				dpr={[0.5, 0.9]}
 				camera={{ position: INITIAL_CAMERA_POSITION, fov: 25 }}
 				gl={{ antialias: true, powerPreference: "high-performance" }}
 			>
@@ -333,17 +344,20 @@ const CityCanvas = () => {
 						onFirstPrepared={startOverlayFade}
 						dollyProgressRef={dollyProgressRef}
 					/>
-					<CameraDolly
-						start={dollyStart}
-						durationSec={DOLLY_DURATION}
-						finalPosition={FINAL_CAMERA_POSITION}
-						controlsRef={controlsRef}
-						progressRef={dollyProgressRef}
-					/>
+					{!hasPlayedIntro && (
+						<CameraDolly
+							start={dollyStart}
+							durationSec={DOLLY_DURATION}
+							finalPosition={FINAL_CAMERA_POSITION}
+							controlsRef={controlsRef}
+							progressRef={dollyProgressRef}
+							onFinish={() => setHasPlayedIntro(true)}
+						/>
+					)}
 				</Suspense>
 			</Canvas>
-			<div style={overlayStyles} />
-		</>
+			{overlayOpacity > 0 && <div style={overlayStyles} />}
+		</div>
 	);
 };
 

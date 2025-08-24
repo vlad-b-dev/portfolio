@@ -73,7 +73,6 @@ const HabilityCard = ({ index, title, icon }) => {
 				viewport={{ once: true, amount: 0.25 }}
 				className="flex flex-col items-center"
 			>
-				{/* Title ABOVE circle */}
 				<h3 className="text-white text-xs sm:text-base font-bold text-center min-h-[3.5rem] flex items-center">
 					{title}
 				</h3>

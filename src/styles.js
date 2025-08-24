@@ -12,6 +12,11 @@ const styles = {
 		"text-white md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] font-bold",
 	sectionSubText:
 		"sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
+
+	porfolioHeadText:
+		"text-white md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] font-bold",
+	porfolioSubText:
+		"sm:text-[18px] text-[14px] text-tertiary uppercase tracking-wider",
 };
 
 export { styles };
