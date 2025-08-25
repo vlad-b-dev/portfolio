@@ -24,6 +24,8 @@ const ProjectCard = memo(
 					transitionSpeed={300}
 					scale={1.02}
 					gyroscope={true}
+					gyroscopeOffsetX={0}   // ✅ Calibrate horizontal axis
+					gyroscopeOffsetY={90}  // ✅ Fix natural portrait orientation tilt
 					className="bg-primary p-5 rounded-2xl w-full h-full 
 						shadow-lg shadow-black/30 
 						hover:shadow-2xl hover:shadow-black/50 
@@ -78,8 +80,6 @@ const ProjectContent = ({ name, description, tags, image, source_code_link, link
 							<span className="text-white text-[16px] font-bold">↗</span>
 						</button>
 					)}
-
-
 				</div>
 			)}
 		</div>

@@ -178,7 +178,6 @@ const acomplishedProjects = [
 		].map((name) => ({ name, color: getTagColor(name) })),
 		image: portfolioLogo,
 		source_code_link: "https://github.com/vlad-b-dev/portfolio",
-		link: "https://vladyslav-boychuk.vercel.app/",
 	},
 	{
 		name: "All-In",
