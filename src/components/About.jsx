@@ -68,7 +68,7 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, exter
 			tiltMaxAngleX={30}
 			tiltMaxAngleY={30}
 			perspective={1200}
-			scale={1.2}
+			scale={1.1}
 			transitionSpeed={1000}
 		>
 			<motion.div

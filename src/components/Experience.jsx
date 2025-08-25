@@ -53,7 +53,7 @@ const textVariant = (delay = 0) => ({
 const ProjectCard = memo(({ index, ...project }) => {
 	const content = <ProjectContent {...project} />;
 
-	const delay = index === 0 ? 0.3 : index * 0.8;
+	const delay = index === 0 ? 0.3 : index * 0.7;
 
 	return (
 		<motion.div
