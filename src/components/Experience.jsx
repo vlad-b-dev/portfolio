@@ -21,10 +21,8 @@ const ProjectCard = memo(
 				<Tilt
 					tiltMaxAngleX={17}
 					tiltMaxAngleY={15}
-					tiltAngleXInitial={17}
 					transitionSpeed={300}
 					scale={1.04}
-					gyroscope={true}
 					className="bg-primary p-5 rounded-2xl w-full h-full 
 						shadow-lg shadow-black/30 
 						hover:shadow-2xl hover:shadow-black/50 
