@@ -57,7 +57,7 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
             }}
             className="
         relative text-white sm:text-[30px] text-[18px]
-        font-bold rounded-2xl pb-8 p-4  bg-black-100
+        font-bold rounded-2xl pb-8 p-4  bg-black-100 
         mt-8 text-center text-white
         w-full mx-auto
       "
