@@ -6,7 +6,7 @@ import { styles } from "../styles";
 import { habilities } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
-const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, ref) => {
+const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, externalRef) => {
 	const ringRef = useRef(null);
 	const lightRef = useRef(null);
 
@@ -56,6 +56,12 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, ref) 
 		return () => window.removeEventListener("mousemove", handleMouseMove);
 	}, []);
 
+	useEffect(() => {
+		if (externalRef && typeof externalRef === "object" && externalRef !== null) {
+			externalRef.current = ringRef.current;
+		}
+	}, [externalRef]);
+
 	return (
 		<Tilt
 			className="flex flex-col justify-center items-center"
@@ -66,7 +72,7 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, ref) 
 			transitionSpeed={1000}
 		>
 			<motion.div
-				ref={ref || ringRef}
+				ref={ringRef}
 				variants={fadeIn("right", "spring", index * 0.5, 0.75)}
 				initial="hidden"
 				animate={triggerAll ? "show" : undefined}
@@ -90,7 +96,6 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, ref) 
 						}}
 					/>
 
-					{/* Circle with icon */}
 					<div
 						className="bg-primary rounded-full sm:w-[15vw] sm:h-[15vw] w-[40vw] h-[40vw] flex justify-center items-center
               shadow-[0_30px_40px_rgba(0,0,0,0.9),inset_0_12px_18px_rgba(0,0,0,0.3),inset_0_-12px_18px_rgba(0,0,0,0.3)]
