@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 
@@ -11,6 +11,24 @@ import { github } from "../assets";
 
 const ProjectCard = memo(
 	({ index, name, description, tags, image, source_code_link, link }) => {
+		const [gyroOffset, setGyroOffset] = useState({ x: 0, y: 0 });
+
+		useEffect(() => {
+			const updateOrientation = () => {
+				if (window.screen.orientation?.type.includes("landscape")) {
+					setGyroOffset({ x: 0, y: 0 }); // ✅ landscape looks fine
+				} else {
+					setGyroOffset({ x: 0, y: 90 }); // ✅ portrait needs correction
+				}
+			};
+
+			updateOrientation(); // run once on mount
+			window.addEventListener("orientationchange", updateOrientation);
+
+			return () => {
+				window.removeEventListener("orientationchange", updateOrientation);
+			};
+		}, []);
 		return (
 			<motion.div
 				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
@@ -24,8 +42,8 @@ const ProjectCard = memo(
 					transitionSpeed={300}
 					scale={1.02}
 					gyroscope={true}
-					gyroscopeOffsetX={0}   // ✅ Calibrate horizontal axis
-					gyroscopeOffsetY={90}  // ✅ Fix natural portrait orientation tilt
+					gyroscopeOffsetX={gyroOffset.x}
+					gyroscopeOffsetY={gyroOffset.y}
 					className="bg-primary p-5 rounded-2xl w-full h-full 
 						shadow-lg shadow-black/30 
 						hover:shadow-2xl hover:shadow-black/50 
