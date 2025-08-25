@@ -6,8 +6,8 @@ import { Navbar, WelcomeSection } from "./components";
 const About = lazy(() =>
 	import("./components").then((m) => ({ default: m.About }))
 );
-const Feedbacks = lazy(() =>
-	import("./components").then((m) => ({ default: m.Feedbacks }))
+const Experience = lazy(() =>
+	import("./components").then((m) => ({ default: m.Experience }))
 );
 const Contact = lazy(() =>
 	import("./components").then((m) => ({ default: m.Contact }))
@@ -35,7 +35,7 @@ const App = () => {
 				</Suspense>
 
 				<Suspense fallback={<SectionFallback h="60vh" />}>
-					<Feedbacks />
+					<Experience />
 				</Suspense>
 
 				{/*

@@ -37,6 +37,7 @@ const Navbar = () => {
 	const [scrolled, setScrolled] = useState(false);
 	const toggleMenu = useRef(null);
 
+
 	// Scroll listener
 	useEffect(() => {
 		const handleScroll = () => setScrolled(window.scrollY > 5);
@@ -160,7 +161,7 @@ const Navbar = () => {
 						animate="visible"
 						exit="exit"
 						transition={{ type: "spring", stiffness: 300, damping: 25 }}
-						className="p-6 bg-primary/60 backdrop-blur-md fixed top-20 left-0 min-w-10 z-30 rounded-xl flex-col flex"
+						className="p-6 bg-primary/60 backdrop-blur-md fixed top-20 left-0 min-w-10 z-30 rounded-xl flex-col flex shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
 					>
 						<motion.ul
 							className="list-none flex flex-col gap-4"
@@ -176,8 +177,7 @@ const Navbar = () => {
 							{navLinks.map((nav) => (
 								<motion.li
 									key={nav.id}
-									className={`font-medium cursor-pointer text-xl ${active === nav.title ? "text-white" : "text-secondary"
-										}`}
+									className="font-medium text-[22px] text-white"
 									onClick={() => {
 										setToggle(false);
 										setActive(nav.title);

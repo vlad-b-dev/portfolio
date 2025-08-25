@@ -8,7 +8,7 @@ const SKILLS = [
 	"React",
 	"Spring",
 	"Three.js",
-	"UX-UI",
+	"UX/UI",
 	"Microservices",
 	"Scrum",
 	"Node.js",

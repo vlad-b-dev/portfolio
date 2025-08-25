@@ -5,11 +5,12 @@ import Tilt from "react-parallax-tilt";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
-import { projects } from "../constants";
+import { professionalProjects, acomplishedProjects, activeProjects } from "../constants";
+import ExperienceDisplay from "./ExperienceDisplay";
 import { github } from "../assets";
 
 const ProjectCard = memo(
-	({ index, name, description, tags, image, source_code_link }) => {
+	({ index, name, description, tags, image, source_code_link, link }) => {
 		return (
 			<motion.div
 				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
@@ -34,6 +35,7 @@ const ProjectCard = memo(
 						tags={tags}
 						image={image}
 						source_code_link={source_code_link}
+						link={link}
 					/>
 				</Tilt>
 			</motion.div>
@@ -41,7 +43,7 @@ const ProjectCard = memo(
 	}
 );
 
-const ProjectContent = ({ name, description, tags, image, source_code_link }) => (
+const ProjectContent = ({ name, description, tags, image, source_code_link, link }) => (
 	<>
 		<div className="relative w-full h-[230px]">
 			<img
@@ -50,24 +52,40 @@ const ProjectContent = ({ name, description, tags, image, source_code_link }) =>
 				className="w-full h-full object-cover rounded-2xl"
 				loading="lazy"
 			/>
-			<div className="absolute inset-0 flex justify-end m-3 card-img_hover">
-				<button
-					onClick={() => window.open(source_code_link, "_blank")}
-					className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
-					aria-label={`View ${name} source code`}
-				>
-					<img
-						src={github}
-						alt="GitHub"
-						className="w-1/2 h-1/2 object-contain"
-						loading="lazy"
-					/>
-				</button>
-			</div>
+
+			{(source_code_link || link) && (
+				<div className="absolute inset-0 flex justify-end m-3 card-img_hover gap-2">
+					{source_code_link && (
+						<button
+							onClick={() => window.open(source_code_link, "_blank")}
+							className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+							aria-label={`View ${name} source code`}
+						>
+							<img
+								src={github}
+								alt="GitHub"
+								className="w-1/2 h-1/2 object-contain"
+								loading="lazy"
+							/>
+						</button>
+					)}
+					{link && (
+						<button
+							onClick={() => window.open(link, "_blank")}
+							className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+							aria-label={`Open ${name} live site`}
+						>
+							<span className="text-white text-[16px] font-bold">↗</span>
+						</button>
+					)}
+
+
+				</div>
+			)}
 		</div>
 
 		<div className="mt-5">
-			<h3 className="text-white font-bold text-[20px] sm:text-[24px]">{name}</h3>
+			<h3 className="text-white font-bold text-[18px] sm:text-[22px]">{name}</h3>
 			<p className="mt-2 text-secondary text-[14px] leading-relaxed">
 				{description}
 			</p>
@@ -86,11 +104,13 @@ const ProjectContent = ({ name, description, tags, image, source_code_link }) =>
 	</>
 );
 
+
+
 /* ---------- New Component ---------- */
 const ExperienceBlock = ({ title, duration, description, projects }) => (
 	<div className="mt-4 blue-green-gradient rounded-[20px]">
 		<div
-			className={`bg-black-100 rounded-2xl sm:px-16 px-6 sm:pt-8 sm:pb-16 py-10 sm:min-h-[42vh] min-h-[50vh]`}
+			className={`bg-black-100 rounded-2xl sm:px-16 px-6 sm:pt-8 sm:pb-16 py-10 sm:min-h-[45vh] min-h-[57vh]`}
 		>
 			<motion.div
 				variants={textVariant()}
@@ -100,7 +120,7 @@ const ExperienceBlock = ({ title, duration, description, projects }) => (
 			>
 				<h2 className={styles.porfolioHeadText}>{title}</h2>
 				<p className={styles.porfolioExperience}>{duration}</p>
-				<p className="text-secondary text-base leading-[30px]">
+				<p className="text-secondary text-[14px] leading-[30px]">
 					{description}
 				</p>
 			</motion.div>
@@ -112,14 +132,29 @@ const ExperienceBlock = ({ title, duration, description, projects }) => (
 	</div>
 );
 
-const Feedbacks = () => {
-	const renderedProjects = useMemo(
+const Experience = () => {
+	const renderedProfessionalProjects = useMemo(
 		() =>
-			projects.map((project, index) => (
+			professionalProjects.map((project, index) => (
 				<ProjectCard key={`project-${index}`} index={index} {...project} />
 			)),
 		[]
 	);
+	const renderedAcomplishedProjects = useMemo(
+		() =>
+			acomplishedProjects.map((project, index) => (
+				<ProjectCard key={`project-${index}`} index={index} {...project} />
+			)),
+		[]
+	);
+	const renderedActiveProjects = useMemo(
+		() =>
+			activeProjects.map((project, index) => (
+				<ProjectCard key={`project-${index}`} index={index} {...project} />
+			)),
+		[]
+	);
+
 
 	return (
 		<>
@@ -137,8 +172,8 @@ const Feedbacks = () => {
 			<ExperienceBlock
 				title="Zeo Technology"
 				duration="3 years 8 months"
-				description="A pioneering Industry 4.0 company with worldwide reach"
-				projects={renderedProjects}
+				description="A global Industry 4.0 pioneer, blending agility and innovation to transform manufacturing. Recognized worldwide as a leader in MES systems, and trusted by industry leaders including Cinfa, Florette, and Onnera"
+				projects={renderedProfessionalProjects}
 			/>
 			<motion.div
 				variants={textVariant()}
@@ -156,41 +191,17 @@ const Feedbacks = () => {
 				title="Accomplished"
 				duration="7 months"
 				description="Includes a few completed projects that are no longer under active development, but are maintained and updated as needed"
-				projects={renderedProjects}
+				projects={renderedAcomplishedProjects}
 			/>
 			<ExperienceBlock
 				title="Active and planned"
 				duration="3 months"
 				description="Features projects under active development or planned for near- to mid-term completion. Only completed experience is listed above"
-				projects={renderedProjects}
+				projects={renderedActiveProjects}
 			/>
-			<motion.div
-				variants={textVariant()}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.25 }}
-				className="w-full my-12 flex justify-center px-2"
-			>
-				<h2
-					className="
-					  relative text-white md:text-[35px] sm:text-[30px] xs:text-[25px] text-[20px]
-					  font-bold rounded-2xl p-6 border-2 border-tertiary 
-					  transform-gpu transition-all duration-500
-					  hover:scale-105  text-center
-					  w-full max-w-4xl
-					"
-					style={{
-						boxShadow: "inset 0 0 25px 15px rgba(0,0,0,0.8)"
-					}}
-				>
-					Total experience: <br />
-					<span className="md:text-[40px] sm:text-[35px] xs:text-[30px] text-[25px] text-tertiary">4 years 6 months</span>
-				</h2>
-			</motion.div>
-
-
+			<ExperienceDisplay years={4} months={6} duration={3000} />
 		</>
 	);
 };
 
-export default SectionWrapper(Feedbacks, "");
+export default SectionWrapper(Experience, "");
