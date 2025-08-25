@@ -20,7 +20,7 @@ import bmwaysLogo from "./experience/bmwaysLogo.webp";
 
 import coinPulseLogo from "./experience/coinPulseLogo.webp";
 import kilaAppLogo from "./experience/kilaAppLogo.webp";
-import vibecastLogo from "./experience/vibecastLogo.webp";
+import vibeCastLogo from "./experience/vibeCastLogo.webp";
 
 export {
 	logo,
@@ -41,5 +41,5 @@ export {
 	bmwaysLogo,
 	coinPulseLogo,
 	kilaAppLogo,
-	vibecastLogo,
+	vibeCastLogo,
 };

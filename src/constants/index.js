@@ -13,7 +13,7 @@ import {
 	bmwaysLogo,
 	coinPulseLogo,
 	kilaAppLogo,
-	vibecastLogo,
+	vibeCastLogo,
 } from "../assets";
 
 export const navLinks = [
@@ -241,7 +241,7 @@ const activeProjects = [
 			name,
 			color: getTagColor(name),
 		})),
-		image: vibecastLogo,
+		image: vibeCastLogo,
 	},
 ];
 
