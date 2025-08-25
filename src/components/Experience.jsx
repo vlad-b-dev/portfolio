@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState, useEffect } from "react";
+import React, { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 
@@ -11,6 +11,8 @@ import { github } from "../assets";
 
 const ProjectCard = memo(
 	({ index, name, description, tags, image, source_code_link, link }) => {
+		const isMobile = useMemo(() => window.innerWidth < 640, []);
+
 		return (
 			<motion.div
 				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
@@ -19,15 +21,15 @@ const ProjectCard = memo(
 				viewport={{ once: true, amount: 0.2 }}
 			>
 				<Tilt
-					tiltMaxAngleX={15}   // ✅ allow horizontal tilt
-					tiltMaxAngleY={0}    // ✅ block vertical tilt (fixes centering issue)
+					tiltMaxAngleX={isMobile ? 0 : 17}
+					tiltMaxAngleY={isMobile ? 18 : 15}
 					transitionSpeed={300}
-					scale={1.02}
+					scale={1.04}
 					gyroscope={true}
 					className="bg-primary p-5 rounded-2xl w-full h-full 
-			  shadow-lg shadow-black/30 
-			  hover:shadow-2xl hover:shadow-black/50 
-			  transition-shadow duration-300 border-2 border-tertiary"
+						shadow-lg shadow-black/30 
+						hover:shadow-2xl hover:shadow-black/50 
+						transition-shadow duration-300 border-2 border-tertiary"
 				>
 					<ProjectContent
 						name={name}
@@ -78,6 +80,8 @@ const ProjectContent = ({ name, description, tags, image, source_code_link, link
 							<span className="text-white text-[16px] font-bold">↗</span>
 						</button>
 					)}
+
+
 				</div>
 			)}
 		</div>

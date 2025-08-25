@@ -65,10 +65,10 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, exter
 	return (
 		<Tilt
 			className="flex flex-col justify-center items-center"
-			tiltMaxAngleX={25}
-			tiltMaxAngleY={25}
+			tiltMaxAngleX={30}
+			tiltMaxAngleY={30}
 			perspective={1200}
-			scale={1.1}
+			scale={1.2}
 			transitionSpeed={1000}
 		>
 			<motion.div
