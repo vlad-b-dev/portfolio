@@ -18,12 +18,21 @@ const ProjectCard = memo(
 				whileInView="show"
 				viewport={{ once: true, amount: 0.2 }}
 			>
-				<Tilt
-					tiltMaxAngleX={17}
+				{/* tiltMaxAngleX={17}
 					tiltMaxAngleY={15}
 					transitionSpeed={300}
 					scale={1.04}
-					gyroscope={false}
+					gyroscope={false} */}
+				<Tilt
+
+
+					tiltMaxAngleX={17}
+					tiltMaxAngleY={15}
+					perspective={1200}
+					scale={1.04}
+					transitionSpeed={1000}
+
+
 					className="bg-primary p-5 rounded-2xl w-full h-full 
 						shadow-lg shadow-black/30 
 						hover:shadow-2xl hover:shadow-black/50 
