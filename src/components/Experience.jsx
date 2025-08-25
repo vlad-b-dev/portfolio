@@ -11,24 +11,6 @@ import { github } from "../assets";
 
 const ProjectCard = memo(
 	({ index, name, description, tags, image, source_code_link, link }) => {
-		const [gyroOffset, setGyroOffset] = useState({ x: 0, y: 0 });
-
-		useEffect(() => {
-			const updateOrientation = () => {
-				if (window.screen.orientation?.type.includes("landscape")) {
-					setGyroOffset({ x: 0, y: 0 }); // ✅ landscape looks fine
-				} else {
-					setGyroOffset({ x: 0, y: 90 }); // ✅ portrait needs correction
-				}
-			};
-
-			updateOrientation(); // run once on mount
-			window.addEventListener("orientationchange", updateOrientation);
-
-			return () => {
-				window.removeEventListener("orientationchange", updateOrientation);
-			};
-		}, []);
 		return (
 			<motion.div
 				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
@@ -37,17 +19,15 @@ const ProjectCard = memo(
 				viewport={{ once: true, amount: 0.2 }}
 			>
 				<Tilt
-					tiltMaxAngleX={15}
-					tiltMaxAngleY={15}
+					tiltMaxAngleX={15}   // ✅ allow horizontal tilt
+					tiltMaxAngleY={0}    // ✅ block vertical tilt (fixes centering issue)
 					transitionSpeed={300}
 					scale={1.02}
 					gyroscope={true}
-					gyroscopeOffsetX={gyroOffset.x}
-					gyroscopeOffsetY={gyroOffset.y}
 					className="bg-primary p-5 rounded-2xl w-full h-full 
-						shadow-lg shadow-black/30 
-						hover:shadow-2xl hover:shadow-black/50 
-						transition-shadow duration-300 border-2 border-tertiary"
+			  shadow-lg shadow-black/30 
+			  hover:shadow-2xl hover:shadow-black/50 
+			  transition-shadow duration-300 border-2 border-tertiary"
 				>
 					<ProjectContent
 						name={name}
