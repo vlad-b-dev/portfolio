@@ -12,22 +12,23 @@ import { github } from "../assets";
 const ProjectCard = memo(
 	({ index, name, description, tags, image, source_code_link, link }) => {
 		return (
-			<motion.div
-				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.2 }}
-			>
-				<Tilt
-					tiltMaxAngleX={17}
-					tiltMaxAngleY={15}
-					scale={1.04}
-					transitionSpeed={300}
-					gyroscope={false}
-					className="bg-primary p-5 rounded-2xl w-full h-full 
+
+			<Tilt
+				tiltMaxAngleX={17}
+				tiltMaxAngleY={15}
+				scale={1.04}
+				transitionSpeed={300}
+				gyroscope={false}
+				className="bg-primary p-5 rounded-2xl w-full h-full 
 						shadow-lg shadow-black/30 
 						hover:shadow-2xl hover:shadow-black/50 
 						transition-shadow duration-300 border-2 border-tertiary"
+			>
+				<motion.div
+					variants={fadeIn("up", "spring", index * 0.5, 0.75)}
+					initial="hidden"
+					whileInView="show"
+					viewport={{ once: true, amount: 0.2 }}
 				>
 					<ProjectContent
 						name={name}
@@ -37,8 +38,9 @@ const ProjectCard = memo(
 						source_code_link={source_code_link}
 						link={link}
 					/>
-				</Tilt>
-			</motion.div>
+				</motion.div>
+
+			</Tilt >
 		);
 	}
 );
