@@ -1,60 +1,129 @@
-import React, { memo, useMemo } from "react";
+import React, { memo, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
 
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
 import { professionalProjects, acomplishedProjects, activeProjects } from "../constants";
 import ExperienceDisplay from "./ExperienceDisplay";
 import { github } from "../assets";
 
-const ProjectCard = memo(
-	({ index, name, description, tags, image, source_code_link, link }) => {
-		return (
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-			<Tilt
-				tiltMaxAngleX={17}
-				tiltMaxAngleY={15}
-				scale={1.04}
-				transitionSpeed={300}
-				gyroscope={false}
-				className="bg-primary p-5 rounded-2xl w-full h-full 
-						shadow-lg shadow-black/30 
-						hover:shadow-2xl hover:shadow-black/50 
-						transition-shadow duration-300 border-2 border-tertiary"
-			>
-				<motion.div
-					variants={fadeIn("up", "spring", index * 0.5, 0.75)}
-					initial="hidden"
-					whileInView="show"
-					viewport={{ once: true, amount: 0.2 }}
+// -------------------- Improved Fade In --------------------
+const fadeInWeighted = (direction = "up", delay = 0) => {
+	const distance = 90;
+	return {
+		hidden: {
+			opacity: 0,
+			y: direction === "up" ? distance : -distance,
+			scale: 0.98
+		},
+		show: {
+			opacity: 1,
+			y: 0,
+			scale: 1,
+			transition: {
+				type: "spring",
+				stiffness: 85,
+				damping: 18,
+				mass: 1,
+				delay,
+			},
+		},
+	};
+};
+
+// -------------------- Text Variant --------------------
+const textVariant = (delay = 0) => ({
+	hidden: { opacity: 0, y: 20 },
+	show: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			type: "spring",
+			stiffness: 80,
+			damping: 16,
+			delay,
+		},
+	},
+});
+
+// -------------------- Project Card --------------------
+const ProjectCard = memo(({ index, ...project }) => {
+	const content = <ProjectContent {...project} />;
+
+	const delay = index === 0 ? 0.3 : index * 0.8;
+
+	return (
+		<motion.div
+			variants={fadeInWeighted("up", delay)}
+			initial="hidden"
+			whileInView="show"
+			viewport={{ once: true, amount: 0.2 }}
+			whileHover={{ scale: 1.02 }}
+			whileTap={{ scale: 0.97 }}
+		>
+			{isMobile ? (
+				<MobileTiltWrapper>{content}</MobileTiltWrapper>
+			) : (
+				<Tilt
+					tiltMaxAngleX={17}
+					tiltMaxAngleY={15}
+					scale={1.04}
+					transitionSpeed={300}
+					gyroscope={false}
+					className="bg-primary p-5 rounded-2xl w-full h-full shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/50 transition-shadow duration-300 border-2 border-tertiary"
 				>
-					<ProjectContent
-						name={name}
-						description={description}
-						tags={tags}
-						image={image}
-						source_code_link={source_code_link}
-						link={link}
-					/>
-				</motion.div>
+					{content}
+				</Tilt>
+			)}
+		</motion.div>
+	);
+});
 
-			</Tilt >
-		);
-	}
-);
+// -------------------- Mobile Tilt Wrapper --------------------
+const MobileTiltWrapper = ({ children }) => {
+	const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
+	const handleMove = useCallback((e) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+		const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+		const x = (clientX - rect.left) / rect.width;
+		const y = (clientY - rect.top) / rect.height;
+
+		setRotation({ x: (y - 0.5) * 40, y: (x - 0.5) * -40 });
+	}, []);
+
+	const handleLeave = useCallback(() => setRotation({ x: 0, y: 0 }), []);
+
+	return (
+		<motion.div
+			onMouseMove={handleMove}
+			onMouseLeave={handleLeave}
+			onTouchMove={handleMove}
+			onTouchEnd={handleLeave}
+			style={{
+				rotateX: rotation.x,
+				rotateY: rotation.y,
+				transformStyle: "preserve-3d",
+			}}
+			className="bg-primary p-5 rounded-2xl w-full h-full shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/50 transition-shadow duration-300 border-2 border-tertiary"
+			whileHover={{ scale: 1.02 }}
+			whileTap={{ scale: 0.97 }}
+		>
+			{children}
+		</motion.div>
+	);
+};
+
+// -------------------- Project Content --------------------
 const ProjectContent = ({ name, description, tags, image, source_code_link, link }) => (
 	<>
 		<div className="relative w-full h-[230px]">
-			<img
-				src={image}
-				alt={name}
-				className="w-full h-full object-cover rounded-2xl"
-				loading="lazy"
-			/>
-
+			<img src={image} alt={name} className="w-full h-full object-cover rounded-2xl" loading="lazy" />
 			{(source_code_link || link) && (
 				<div className="absolute inset-0 flex justify-end m-3 card-img_hover gap-2">
 					{source_code_link && (
@@ -63,12 +132,7 @@ const ProjectContent = ({ name, description, tags, image, source_code_link, link
 							className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
 							aria-label={`View ${name} source code`}
 						>
-							<img
-								src={github}
-								alt="GitHub"
-								className="w-1/2 h-1/2 object-contain"
-								loading="lazy"
-							/>
+							<img src={github} alt="GitHub" className="w-1/2 h-1/2 object-contain" loading="lazy" />
 						</button>
 					)}
 					{link && (
@@ -80,25 +144,18 @@ const ProjectContent = ({ name, description, tags, image, source_code_link, link
 							<span className="text-white text-[16px] font-bold">↗</span>
 						</button>
 					)}
-
-
 				</div>
 			)}
 		</div>
 
 		<div className="mt-5">
 			<h3 className="text-white font-bold text-[18px] sm:text-[22px]">{name}</h3>
-			<p className="mt-2 text-secondary text-[14px] leading-relaxed">
-				{description}
-			</p>
+			<p className="mt-2 text-secondary text-[14px] leading-relaxed">{description}</p>
 		</div>
 
 		<div className="mt-4 flex flex-wrap gap-2">
 			{tags.map((tag) => (
-				<span
-					key={`${name}-${tag.name}`}
-					className={`text-[13px] sm:text-[14px] ${tag.color}`}
-				>
+				<span key={`${name}-${tag.name}`} className={`text-[13px] sm:text-[14px] ${tag.color}`}>
 					#{tag.name}
 				</span>
 			))}
@@ -106,104 +163,63 @@ const ProjectContent = ({ name, description, tags, image, source_code_link, link
 	</>
 );
 
-
-
-/* ---------- New Component ---------- */
+// -------------------- Experience Block --------------------
 const ExperienceBlock = ({ title, duration, description, projects }) => (
 	<div className="mt-4 blue-green-gradient rounded-[20px]">
-		<div
-			className={`bg-black-100 rounded-2xl sm:px-16 px-6 sm:pt-8 sm:pb-16 py-10 sm:min-h-[45vh] min-h-[57vh]`}
-		>
-			<motion.div
-				variants={textVariant()}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.2 }}
-			>
+		<div className="bg-black-100 rounded-2xl sm:px-16 px-6 sm:pt-8 sm:pb-16 py-10 sm:min-h-[45vh] min-h-[57vh]">
+			<motion.div variants={textVariant()} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
 				<h2 className={styles.porfolioHeadText}>{title}</h2>
 				<p className={styles.porfolioExperience}>{duration}</p>
-				<p className="text-secondary text-[14px] leading-[30px]">
-					{description}
-				</p>
+				<p className="text-secondary text-[14px] leading-[30px]">{description}</p>
 			</motion.div>
 		</div>
-
 		<div className="-mt-16 pb-14 sm:px-8 px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 			{projects}
 		</div>
 	</div>
 );
 
+// -------------------- Main Experience --------------------
 const Experience = () => {
-	const renderedProfessionalProjects = useMemo(
-		() =>
-			professionalProjects.map((project, index) => (
-				<ProjectCard key={`project-${index}`} index={index} {...project} />
-			)),
+	const renderProjects = useCallback((projects) =>
+		projects.map((p, i) => <ProjectCard key={`project-${i}`} index={i} {...p} />),
 		[]
 	);
-	const renderedAcomplishedProjects = useMemo(
-		() =>
-			acomplishedProjects.map((project, index) => (
-				<ProjectCard key={`project-${index}`} index={index} {...project} />
-			)),
-		[]
-	);
-	const renderedActiveProjects = useMemo(
-		() =>
-			activeProjects.map((project, index) => (
-				<ProjectCard key={`project-${index}`} index={index} {...project} />
-			)),
-		[]
-	);
-
 
 	return (
 		<>
-			<motion.div
-				variants={textVariant()}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.25 }}
-			>
-				<p className={styles.sectionSubText}>Projects</p>
-				<h2 className={styles.sectionHeadText}>
-					<span className="text-tertiary">_</span>Professional
-				</h2>
-			</motion.div>
-			<ExperienceBlock
-				title="Zeo Technology"
-				duration="3 years 8 months"
+			<SectionHeader subText="Projects" headText="_Professional" />
+			<ExperienceBlock title="Zeo Technology" duration="3 years 8 months"
 				description="A global Industry 4.0 pioneer, blending agility and innovation to transform manufacturing. Recognized worldwide as a leader in MES systems, and trusted by industry leaders including Cinfa, Florette, and Onnera"
-				projects={renderedProfessionalProjects}
+				projects={renderProjects(professionalProjects)}
 			/>
-			<motion.div
-				variants={textVariant()}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.25 }}
-				className="mt-16"
-			>
-				<p className={styles.sectionSubText}>Projects</p>
-				<h2 className={styles.sectionHeadText}>
-					<span className="text-tertiary">_</span>Personal
-				</h2>
-			</motion.div>
+			<SectionHeader subText="Projects" headText="_Personal" className="mt-16" />
 			<ExperienceBlock
 				title="Accomplished"
 				duration="7 months"
 				description="Includes a few completed projects that are no longer under active development, but are maintained and updated as needed"
-				projects={renderedAcomplishedProjects}
+				projects={renderProjects(acomplishedProjects)}
 			/>
 			<ExperienceBlock
 				title="Active and planned"
 				duration="3 months"
 				description="Features projects under active development or planned for near- to mid-term completion. Only completed experience is listed above"
-				projects={renderedActiveProjects}
+				projects={renderProjects(activeProjects)}
 			/>
 			<ExperienceDisplay years={4} months={6} duration={3000} />
 		</>
 	);
 };
+
+// -------------------- Section Header --------------------
+const SectionHeader = ({ subText, headText, className = "" }) => (
+	<motion.div variants={textVariant()} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className={className}>
+		<p className={styles.sectionSubText}>{subText}</p>
+		<h2 className={styles.sectionHeadText}>
+			<span className="text-tertiary">{headText[0]}</span>
+			{headText.slice(1)}
+		</h2>
+	</motion.div>
+);
 
 export default SectionWrapper(Experience, "");

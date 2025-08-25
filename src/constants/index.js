@@ -96,7 +96,7 @@ const skillColors = {
 	lighthouse: "text-[#9CDCFE]",
 	Canva: "text-[#C586C0]",
 	Inkscape: "text-[#4EC9B0]",
-	android: "text-[#3DDC84]",
+	Android: "text-[#3DDC84]",
 	database: "text-[#B5CEA8]",
 	curl: "text-[#CE9178]",
 	cryptocurrency: "text-[#D16969]",
@@ -201,7 +201,7 @@ const acomplishedProjects = [
 		name: "BMWays",
 		description:
 			"Android application developed with a friend during university. Organizes information for repairs, including guides and parts available for purchase. While not yet launched, was our first experience in mobile development.",
-		tags: ["android", "database", "curl"].map((name) => ({
+		tags: ["Android", "database", "curl"].map((name) => ({
 			name,
 			color: getTagColor(name),
 		})),
