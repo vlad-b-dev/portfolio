@@ -11,8 +11,6 @@ import { github } from "../assets";
 
 const ProjectCard = memo(
 	({ index, name, description, tags, image, source_code_link, link }) => {
-		const isMobile = useMemo(() => window.innerWidth < 640, []);
-
 		return (
 			<motion.div
 				variants={fadeIn("up", "spring", index * 0.5, 0.75)}
@@ -21,8 +19,9 @@ const ProjectCard = memo(
 				viewport={{ once: true, amount: 0.2 }}
 			>
 				<Tilt
-					tiltMaxAngleX={isMobile ? 0 : 17}
-					tiltMaxAngleY={isMobile ? 18 : 15}
+					tiltMaxAngleX={17}
+					tiltMaxAngleY={15}
+					tiltAngleXInitial={17}
 					transitionSpeed={300}
 					scale={1.04}
 					gyroscope={true}
