@@ -13,7 +13,7 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
         if (!inView || startedRef.current) return;
         startedRef.current = true;
 
-        const slideDuration = 600;
+        const slideDuration = 700;
         const timer = setTimeout(() => setReadyToCount(true), slideDuration);
 
         return () => clearTimeout(timer);
@@ -47,7 +47,7 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
     return (
         <motion.h2
             ref={ref}
-            initial={{ opacity: 0, y: -150 }}
+            initial={{ opacity: 0, y: -250 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{
                 type: "spring",

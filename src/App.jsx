@@ -38,16 +38,16 @@ const App = () => {
 					<Experience />
 				</Suspense>
 
-				{/*
-        <div className="relative z-10">
-          <Suspense fallback={<SectionFallback h="80vh" />}>
-            <Contact />
-          </Suspense>
-          <Suspense fallback={null}>
-            <StarsCanvas />
-          </Suspense>
-        </div>
-        */}
+
+				<div className="relative z-10">
+					<Suspense fallback={<SectionFallback h="80vh" />}>
+						<Contact />
+					</Suspense>
+					<Suspense fallback={null}>
+						<StarsCanvas />
+					</Suspense>
+				</div>
+
 			</div>
 		</BrowserRouter>
 	);

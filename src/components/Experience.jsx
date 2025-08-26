@@ -53,7 +53,7 @@ const textVariant = (delay = 0) => ({
 const ProjectCard = memo(({ index, ...project }) => {
 	const content = <ProjectContent {...project} />;
 
-	const delay = index === 0 ? 0.3 : index * 0.7;
+	const delay = index === 0 ? 0.3 : index * 0.65;
 
 	return (
 		<motion.div
@@ -85,19 +85,23 @@ const ProjectCard = memo(({ index, ...project }) => {
 // -------------------- Mobile Tilt Wrapper --------------------
 const MobileTiltWrapper = ({ children }) => {
 	const [rotation, setRotation] = useState({ x: 0, y: 0 });
-
 	const handleMove = useCallback((e) => {
 		const rect = e.currentTarget.getBoundingClientRect();
-		const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-		const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+		const clientX = e.touches?.[0]?.clientX ?? e.clientX;
+		const clientY = e.touches?.[0]?.clientY ?? e.clientY;
 
-		const x = (clientX - rect.left) / rect.width;
-		const y = (clientY - rect.top) / rect.height;
+		const x = (clientX - rect.left) / rect.width - 0.35;
+		const y = (clientY - rect.top) / rect.height - 0.35;
 
-		setRotation({ x: (y - 0.5) * 40, y: (x - 0.5) * -40 });
+		setRotation({ x: y * 45, y: x * -45 });
 	}, []);
 
 	const handleLeave = useCallback(() => setRotation({ x: 0, y: 0 }), []);
+
+	const shadowStyle = {
+		boxShadow: `${-rotation.y / 2}px ${rotation.x / 2}px 30px rgba(0,0,0,0.9)`,
+		transformStyle: "preserve-3d",
+	};
 
 	return (
 		<motion.div
@@ -105,12 +109,10 @@ const MobileTiltWrapper = ({ children }) => {
 			onMouseLeave={handleLeave}
 			onTouchMove={handleMove}
 			onTouchEnd={handleLeave}
-			style={{
-				rotateX: rotation.x,
-				rotateY: rotation.y,
-				transformStyle: "preserve-3d",
-			}}
-			className="bg-primary p-5 rounded-2xl w-full h-full shadow-lg shadow-black/30 hover:shadow-2xl hover:shadow-black/50 transition-shadow duration-300 border-2 border-tertiary"
+			animate={{ rotateX: rotation.x, rotateY: rotation.y }}
+			transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
+			style={shadowStyle}
+			className="bg-primary p-5 rounded-2xl w-full h-full border-2 border-tertiary"
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.97 }}
 		>
