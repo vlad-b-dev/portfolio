@@ -177,7 +177,7 @@ const Navbar = () => {
 							{navLinks.map((nav) => (
 								<motion.li
 									key={nav.id}
-									className="font-medium text-[22px] text-white"
+									className="font-medium text-[18px] text-white"
 									onClick={() => {
 										setToggle(false);
 										setActive(nav.title);

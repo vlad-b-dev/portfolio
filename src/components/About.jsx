@@ -77,7 +77,7 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, exter
 				initial="hidden"
 				animate={triggerAll ? "show" : undefined}
 				whileInView={!triggerAll ? "show" : undefined}
-				viewport={{ once: true, amount: 0.25 }}
+				viewport={{ once: true, amount: 0.05 }}
 				className="flex flex-col items-center"
 			>
 				<h3 className="text-white text-xs sm:text-base font-bold text-center min-h-[3.5rem] flex items-center">

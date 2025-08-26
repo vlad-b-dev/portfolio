@@ -224,4 +224,4 @@ const SectionHeader = ({ subText, headText, className = "" }) => (
 	</motion.div>
 );
 
-export default SectionWrapper(Experience, "");
+export default SectionWrapper(Experience, "experience");

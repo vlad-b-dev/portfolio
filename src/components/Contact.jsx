@@ -70,12 +70,12 @@ const Contact = () => {
 				variants={slideIn("left", "tween", 0.2, 1)}
 				className="flex-[0.75] bg-black-100 p-6 rounded-2xl z-10 relative"
 			>
-				<p className={styles.sectionSubText}>Send a message</p>
+				<p className={styles.sectionSubText}>Contact</p>
 				<h2 className={styles.sectionHeadText}>
-					<span className="text-tertiary">_</span>Contact
+					<span className="text-tertiary">_</span>Email
 				</h2>
 
-				<form ref={formRef} onSubmit={handleSubmit} className="mt-3 flex flex-col gap-4">
+				<form ref={formRef} onSubmit={handleSubmit} className="mt-3 flex flex-col gap-4 z-20" >
 					<label className="flex flex-col">
 						<span className="text-white font-medium mb-2">Name</span>
 						<input
