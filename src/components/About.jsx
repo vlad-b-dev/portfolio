@@ -2,13 +2,19 @@ import React, { useRef, useEffect, useMemo, useState } from "react";
 import { SectionWrapper } from "../hoc";
 import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
-import { styles } from "../styles";
 import { habilities } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { fadeIn } from "../utils/motion";
+import AutoTrans from "./AutoTrans";
+import { useTranslation } from "react-i18next";
+import SectionHeader from "./SectionHeader";
 
-const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, externalRef) => {
+
+
+
+const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll }, externalRef) => {
 	const ringRef = useRef(null);
 	const lightRef = useRef(null);
+	const { t } = useTranslation();
 
 	const maskThreshold = useMemo(
 		() => (window.innerWidth < 640 ? "70%" : "43%"),
@@ -81,7 +87,7 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, exter
 				className="flex flex-col items-center"
 			>
 				<h3 className="text-white text-xs sm:text-base font-bold text-center min-h-[3.5rem] flex items-center">
-					{title}
+					{t(`about.habilities.${id}`)}
 				</h3>
 
 				<div className="relative p-[3px] rounded-full bg-tertiary overflow-visible">
@@ -103,7 +109,7 @@ const HabilityCard = React.forwardRef(({ index, title, icon, triggerAll }, exter
 					>
 						<img
 							src={icon}
-							alt={title}
+							alt={id}
 							className="sm:w-32 sm:h-32 w-[32vw] h-[32vw] object-contain z-50"
 						/>
 					</div>
@@ -117,6 +123,8 @@ const About = () => {
 	const isMobile = useMemo(() => window.innerWidth < 640, []);
 	const firstCardRef = useRef(null);
 	const [triggerAll, setTriggerAll] = useState(false);
+	const { t } = useTranslation();
+
 
 	useEffect(() => {
 		if (isMobile || !firstCardRef.current) return;
@@ -137,18 +145,7 @@ const About = () => {
 
 	return (
 		<>
-			<motion.div
-				variants={textVariant()}
-				initial="hidden"
-				whileInView="show"
-				viewport={{ once: true, amount: 0.25 }}
-			>
-				<p className={styles.sectionSubText}>Introduction</p>
-				<h2 className={styles.sectionHeadText}>
-					<span className="text-tertiary">_</span>Summary
-				</h2>
-			</motion.div>
-
+			<SectionHeader subText={t(`about.profile`)} headText={t(`about.summary`)} />
 			<motion.p
 				variants={fadeIn("", "", 0.1, 1)}
 				initial="hidden"
@@ -156,18 +153,13 @@ const About = () => {
 				viewport={{ once: true, amount: 0.25 }}
 				className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
 			>
-				I’m a software developer and UX/UI expert with experience in Industry 4.0
-				solutions. Skilled in TypeScript, JavaScript, Java and Python, I work with
-				frameworks like Angular, React, and Spring Boot to build scalable,
-				user-friendly applications. By combining technical expertise with design
-				skills, I create innovative and reliable software tailored to real-world
-				needs.
+				<AutoTrans i18nKey="about.summaryText"></AutoTrans>
 			</motion.p>
 
 			<div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-x-5 gap-y-10">
 				{habilities.map((hability, index) => (
 					<HabilityCard
-						key={hability.title}
+						key={hability.id}
 						index={index}
 						{...hability}
 						triggerAll={isMobile ? undefined : triggerAll}

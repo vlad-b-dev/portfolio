@@ -7,6 +7,9 @@ import Contact from "./Contact";
 import CanvasLoader from "./Loader";
 import DynamicText from "./DynamicText";
 import ExperienceDisplay from "./ExperienceDisplay";
+import LanguajeSwitch from "./LanguajeSwitch";
+import AutoTrans from "./AutoTrans";
+import SectionHeader from "./SectionHeader";
 
 export {
 	WelcomeSection,
@@ -20,4 +23,7 @@ export {
 	StarsCanvas,
 	DynamicText,
 	ExperienceDisplay,
+	LanguajeSwitch,
+	AutoTrans,
+	SectionHeader
 };

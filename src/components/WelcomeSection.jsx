@@ -2,8 +2,9 @@ import { CityCanvas } from "./canvas";
 import { DynamicText } from ".";
 import { styles } from "../styles";
 import { motion } from "framer-motion";
-
+import { AutoTrans } from "./index";
 const WelcomeSection = () => {
+
 	return (
 		<section className="relative w-full h-screen mx-auto mb-12">
 			{/* Header Section */}
@@ -19,12 +20,15 @@ const WelcomeSection = () => {
 				{/* Text Content */}
 				<div>
 					<h1 className={`${styles.heroHeadText} text-white`}>
-						Hi, I'm <span className="text-[#84ffe9]">Vlad</span>
+						<AutoTrans i18nKey="welcomeSection.hi">
+						</AutoTrans>
+						<span className="text-tertiary">Vlad</span>
 					</h1>
 					<p className={`${styles.heroSubText} mt-2 text-white-100`}>
-						Software engineer,
-						<br className="sm:block hidden" />
-						passionate about design and development
+						<AutoTrans
+							i18nKey="welcomeSection.description"
+							components={{ br: <br className="sm:block hidden" /> }}
+						/>
 					</p>
 					<DynamicText />
 				</div>

@@ -1,13 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
-
-import { styles } from "../styles";
+import { useTranslation } from "react-i18next";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
-import { slideIn } from "../utils/motion";
+import { slideIn } from "../utils/motion"
+import { SectionHeader } from "../components";
+import AutoTrans from "../components/AutoTrans";
 
 const Contact = () => {
+	const { t } = useTranslation();
 	const formRef = useRef();
 	const [form, setForm] = useState({
 		name: "",
@@ -70,44 +72,41 @@ const Contact = () => {
 				variants={slideIn("left", "tween", 0.2, 1)}
 				className="flex-[0.75] bg-black-100 p-6 rounded-2xl z-10 relative"
 			>
-				<p className={styles.sectionSubText}>Contact</p>
-				<h2 className={styles.sectionHeadText}>
-					<span className="text-tertiary">_</span>Email
-				</h2>
+				<SectionHeader subText={t(`contact.title`)} headText={t(`contact.email`)} />
 
 				<form ref={formRef} onSubmit={handleSubmit} className="mt-3 flex flex-col gap-4 z-20" >
 					<label className="flex flex-col">
-						<span className="text-white font-medium mb-2">Name</span>
+						<span className="text-white font-medium mb-2"><AutoTrans i18nKey="contact.name"></AutoTrans></span>
 						<input
 							type="text"
 							name="name"
 							value={form.name}
 							onChange={handleChange}
-							placeholder="Who are you?"
+							placeholder={t(`contact.namePlaceholder`)}
 							className="bg-primary py-2 px-4 placeholder:text-secondary text-white rounded-lg outline-none border border-tertiary font-medium"
 						/>
 					</label>
 
 					<label className="flex flex-col">
-						<span className="text-white font-medium mb-2">Email</span>
+						<span className="text-white font-medium mb-2"><AutoTrans i18nKey="contact.email"></AutoTrans></span>
 						<input
 							type="email"
 							name="email"
 							value={form.email}
 							onChange={handleChange}
-							placeholder="I will get back to you there"
+							placeholder={t(`contact.emailPlaceholder`)}
 							className="bg-primary py-2 px-4 placeholder:text-secondary text-white rounded-lg outline-none border border-tertiary font-medium"
 						/>
 					</label>
 
 					<label className="flex flex-col">
-						<span className="text-white font-medium mb-2">Message</span>
+						<span className="text-white font-medium mb-2"><AutoTrans i18nKey="contact.message"></AutoTrans></span>
 						<textarea
 							rows={4}
 							name="message"
 							value={form.message}
 							onChange={handleChange}
-							placeholder="Share whatever you’d like me to know"
+							placeholder={t(`contact.messagePlaceholder`)}
 							className="bg-primary py-2 px-4 placeholder:text-secondary text-white rounded-lg outline-none border border-tertiary font-medium resize-none overflow-y-auto"
 						/>
 					</label>
@@ -131,7 +130,7 @@ const Contact = () => {
                hover:translate-y-0.5
              "
 					>
-						{loading ? "Sending..." : "Send"}
+						{loading ? t(`contact.sending`) : t(`contact.send`)}
 					</button>
 				</form>
 
@@ -162,7 +161,7 @@ const Contact = () => {
 								transition={{ delay: 0.3 }}
 								className="text-white text-2xl"
 							>
-								Message sent, I will get back to you soon!
+								<AutoTrans i18nKey="contact.success"></AutoTrans>
 							</motion.p>
 						</motion.div>
 					)}
@@ -210,7 +209,7 @@ const Contact = () => {
 								transition={{ delay: 0.3 }}
 								className="text-white text-2xl"
 							>
-								Thanks! Your message was sent successfully. We’ll get back to you soon
+								<AutoTrans i18nKey="contact.success"></AutoTrans>
 							</motion.p>
 						</motion.div>
 					)}

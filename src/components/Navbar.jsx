@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
+import { LanguajeSwitch } from "./index";
+import { AutoTrans } from "./index";
+import { useTranslation } from "react-i18next";
+
 
 // === Variants ===
 const menuVariants = {
@@ -36,6 +40,8 @@ const Navbar = () => {
 	const [toggle, setToggle] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const toggleMenu = useRef(null);
+
+	const { t } = useTranslation();
 
 
 	// Scroll listener
@@ -111,8 +117,11 @@ const Navbar = () => {
 							/>
 						</Link>
 
-						<p className="ml-auto text-white text-[3.25vw] font-bold cursor-pointer whitespace-nowrap mb-1 -mr-1">
-							Full Stack <br /> Developer
+						<p className="ml-auto text-white text-[3.25vw] font-bold cursor-pointer whitespace-nowrap mb-1 -mr-1 text-end">
+							<AutoTrans
+								i18nKey="navbar.fullStackMobile"
+								components={{ br: <br /> }}
+							/>
 						</p>
 					</div>
 
@@ -131,7 +140,7 @@ const Navbar = () => {
 							className="sm:w-1/4 w-2/5 object-contain"
 						/>
 						<p className="text-white text-sm md:text-2xl font-bold cursor-pointer flex">
-							Full Stack Developer
+							<AutoTrans i18nKey="navbar.fullStack" />
 						</p>
 					</Link>
 
@@ -141,18 +150,21 @@ const Navbar = () => {
 							<li
 								key={nav.id}
 								className={`${active === nav.title ? "text-white" : "text-secondary"
-									} hover:text-white text-[14px] font-medium cursor-pointer`}
+									} hover:text-white text-[16px] font-medium cursor-pointer`}
 								onClick={() => setActive(nav.title)}
 							>
-								<a href={`#${nav.id}`}>{nav.title}</a>
+								<a href={`#${nav.id}`}>{t(`navbar.navLinks.${nav.id}`)}</a>
 							</li>
 						))}
 					</ul>
+					<div className="hidden sm:flex ml-12" >
+						<LanguajeSwitch />
+					</div>
 				</div>
-			</nav>
+			</nav >
 
 			{/* === Mobile Dropdown Menu === */}
-			<AnimatePresence>
+			< AnimatePresence >
 				{toggle && (
 					<motion.div
 						ref={toggleMenu}
@@ -163,6 +175,9 @@ const Navbar = () => {
 						transition={{ type: "spring", stiffness: 300, damping: 25 }}
 						className="p-6 bg-primary/60 backdrop-blur-md fixed top-20 left-0 min-w-10 z-30 rounded-xl flex-col flex shadow-[0_10px_40px_rgba(0,0,0,0.7)]"
 					>
+						<div className="mb-6" >
+							<LanguajeSwitch />
+						</div>
 						<motion.ul
 							className="list-none flex flex-col gap-4"
 							initial="hidden"
@@ -185,13 +200,15 @@ const Navbar = () => {
 									variants={mobileLinkVariants}
 									transition={{ type: "spring", stiffness: 400, damping: 25 }}
 								>
-									<a href={`#${nav.id}`}>{nav.title}</a>
+									<a href={`#${nav.id}`}>{t(`navbar.navLinks.${nav.id}`)}</a>
 								</motion.li>
 							))}
 						</motion.ul>
+
 					</motion.div>
-				)}
-			</AnimatePresence>
+				)
+				}
+			</AnimatePresence >
 		</>
 	);
 };

@@ -1,0 +1,101 @@
+{
+    "navbar": { 
+        "fullStack": "Full Stack Developer",
+        "fullStackMobile": "Full Stack<br/>Developer",
+        "navLinks": {
+            "about": "Profile",
+            "experience": "Projects",
+            "contact": "Contact"
+        }
+    },
+    "welcomeSection": {
+        "hi": "Hi, I'm ",
+        "description": "Software engineer, <br/> passionate about design and development"
+    },
+    "about": {
+        "profile": "Profile",
+        "summary": "Summary",
+        "summaryText": "I’m a software developer and UX/UI expert with experience in Industry 4.0 solutions. Skilled in TypeScript, JavaScript, Java and Python, I work with frameworks like Angular, React, and Spring Boot to build scalable, user-friendly applications. By combining technical expertise with design skills, I create innovative and reliable software tailored to real-world needs.",
+        "habilities":{
+            "fullStack": "Full-stack development",
+            "modernFrameworks": "Modern frameworks",
+            "uxUi3d": "UX/UI | 3D Web",
+            "qaAndTesting": "QA | Testing",
+            "graphicDesign": "Graphic design",
+            "scrum": "Scrum-Agile"
+        }
+        
+    },
+    "experience":{
+        "projects": "Projects",
+        "professional": "Professional",
+        "zeo":{
+            "3years8months": "3 years 8 months",
+            "description": "A global Industry 4.0 pioneer, blending agility and innovation to transform manufacturing. Recognized worldwide as a leader in MES systems, and trusted by industry leaders including Cinfa, Florette, and Onnera"
+        },
+        "personal":{
+            "title": "Personal",
+            "acomplished": "Accomplished",
+            "acomplishedText": "Includes a few completed projects that are no longer under active development, but are maintained and updated as needed",
+            "7months": "7 months",
+            "active": "Active and planned",
+            "activeText": "Features projects under active development or planned for near- to mid-term completion. Only completed experience is listed above",
+            "3months": "3 months",
+            "projects": {
+                "reportWizard":{
+                    "name": "Report Wizard",
+                    "description": "Report editing application that empowers clients to create customizable reports. Design layouts, integrate graphics, and organize content with drag-and-drop, giving complete control to the user."
+                },
+                "componentsLibrary":{
+                    "name": "Components library",
+                    "description": "Library of visual components, adapted to the company style and fully customizable. Components can be used throughout the app, especially for dynamic filter configuration at Report Wizard."
+                },
+                "reportVisor":{
+                    "name": "Report Visor | Scheduler",
+                    "description": "Viewer that lets users run generated reports and export them in various formats, via a custom report engine. Includes a scheduler to send reports by email at configured times and recipients."
+                },           
+                "portfolio":{
+                    "name": "Portfolio",
+                    "description": "Personal portfolio focused on UX/UI, performance, and an exceptional user experience. Showcases data clearly, highlights 3D interactions, and is an example of my work while exploring new technologies."
+                },
+                "allIn":{
+                    "name": "All-In",
+                    "description": "My first website, personally developed and deployed. While the design and UX were basic, the project was a valuable learning experience that kickstarted my journey in frontend development and user experience."
+                },
+                "bmways":{
+                    "name": "BMWays",
+                    "description": "Android application developed with a friend during university. Organizes information for repairs, including guides and parts available for purchase. While not yet launched, was our first experience in mobile development."
+                },
+                "coinPulse":{
+                    "name": "CoinPulse",
+                    "description": "Collaborative project in mid-development stage. It tracks launched cryptocurrencies from fast-updating sources and notifies users of significant market fluctuations. Alerts are sent with all key data, enabling quick decisions ahead of slower platforms."
+                },
+                "kilaApp":{
+                    "name": "Kila App",
+                    "description": "Android application with a concept similar to Wallapop, but focused on renting. Enables users to rent items they need temporarily, or to lend out things they’re not using. Initially a university project, we plan to restart development with the goal of launching it."
+                },
+                "vibeCast":{
+                    "name": "VibeCast",
+                    "description": "YouTube clone currently in planning, set to start soon. The project aims to improve my skills in broadcasting and managing large amounts of data, while also focusing on UX and UI design."
+                }
+            }
+        },
+        "totalExperience": "Total experience:",
+        "year": "year",
+        "years": "years",
+        "month": "month",
+        "months": "months"
+    },
+    "contact": {
+        "title": "Contact",
+        "name": "Name",
+        "namePlaceholder": "Who are you?",	
+        "email": "Email",
+        "emailPlaceholder": "I will get back to you there",
+        "message": "Message",
+        "messagePlaceholder": "Share whatever you’d like me to know",
+        "send": "Send",
+        "sending": "Sending...",
+        "success": "Message sent, I will get back to you soon!"
+    }
+}

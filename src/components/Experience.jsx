@@ -7,6 +7,8 @@ import { SectionWrapper } from "../hoc";
 import { professionalProjects, acomplishedProjects, activeProjects } from "../constants";
 import ExperienceDisplay from "./ExperienceDisplay";
 import { github } from "../assets";
+import SectionHeader from "./SectionHeader";
+import { useTranslation } from "react-i18next";
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
@@ -34,23 +36,9 @@ const fadeInWeighted = (direction = "up", delay = 0) => {
 	};
 };
 
-// -------------------- Text Variant --------------------
-const textVariant = (delay = 0) => ({
-	hidden: { opacity: 0, y: 20 },
-	show: {
-		opacity: 1,
-		y: 0,
-		transition: {
-			type: "spring",
-			stiffness: 80,
-			damping: 16,
-			delay,
-		},
-	},
-});
-
 // -------------------- Project Card --------------------
 const ProjectCard = memo(({ index, ...project }) => {
+
 	const content = <ProjectContent {...project} />;
 
 	const delay = index === 0 ? 0.3 : index * 0.65;
@@ -122,50 +110,73 @@ const MobileTiltWrapper = ({ children }) => {
 };
 
 // -------------------- Project Content --------------------
-const ProjectContent = ({ name, description, tags, image, source_code_link, link }) => (
-	<>
-		<div className="relative w-full h-[230px]">
-			<img src={image} alt={name} className="w-full h-full object-cover rounded-2xl" loading="lazy" />
-			{(source_code_link || link) && (
-				<div className="absolute inset-0 flex justify-end m-3 card-img_hover gap-2">
-					{source_code_link && (
-						<button
-							onClick={() => window.open(source_code_link, "_blank")}
-							className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
-							aria-label={`View ${name} source code`}
-						>
-							<img src={github} alt="GitHub" className="w-1/2 h-1/2 object-contain" loading="lazy" />
-						</button>
-					)}
-					{link && (
-						<button
-							onClick={() => window.open(link, "_blank")}
-							className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
-							aria-label={`Open ${name} live site`}
-						>
-							<span className="text-white text-[16px] font-bold">↗</span>
-						</button>
-					)}
-				</div>
-			)}
-		</div>
+const ProjectContent = ({ id, name, tags, image, source_code_link, link }) => {
+	const { t } = useTranslation();
 
-		<div className="mt-5">
-			<h3 className="text-white font-bold text-[18px] sm:text-[22px]">{name}</h3>
-			<p className="mt-2 text-secondary text-[14px] leading-relaxed">{description}</p>
-		</div>
+	return (
+		<>
+			<div className="relative w-full h-[230px]">
+				<img src={image} alt={name} className="w-full h-full object-cover rounded-2xl" loading="lazy" />
+				{(source_code_link || link) && (
+					<div className="absolute inset-0 flex justify-end m-3 card-img_hover gap-2">
+						{source_code_link && (
+							<button
+								onClick={() => window.open(source_code_link, "_blank")}
+								className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+								aria-label={`View ${name} source code`}
+							>
+								<img src={github} alt="GitHub" className="w-1/2 h-1/2 object-contain" loading="lazy" />
+							</button>
+						)}
+						{link && (
+							<button
+								onClick={() => window.open(link, "_blank")}
+								className="black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer"
+								aria-label={`Open ${name} live site`}
+							>
+								<span className="text-white text-[16px] font-bold">↗</span>
+							</button>
+						)}
+					</div>
+				)}
+			</div>
 
-		<div className="mt-4 flex flex-wrap gap-2">
-			{tags.map((tag) => (
-				<span key={`${name}-${tag.name}`} className={`text-[13px] sm:text-[14px] ${tag.color}`}>
-					#{tag.name}
-				</span>
-			))}
-		</div>
-	</>
-);
+			<div className="mt-5">
+				<h3 className="text-white font-bold text-[18px] sm:text-[22px]">
+					{t(`experience.personal.projects.${id}.name`)}
+				</h3>
+				<p className="mt-2 text-secondary text-[14px] leading-relaxed">
+					{t(`experience.personal.projects.${id}.description`)}
+				</p>
+			</div>
+
+			<div className="mt-4 flex flex-wrap gap-2">
+				{tags.map((tag) => (
+					<span key={`${name}-${tag.name}`} className={`text-[13px] sm:text-[14px] ${tag.color}`}>
+						#{tag.name}
+					</span>
+				))}
+			</div>
+		</>
+	);
+};
+
 
 // -------------------- Experience Block --------------------
+const textVariant = (delay = 0) => ({
+	hidden: { opacity: 0, y: 20 },
+	show: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			type: "spring",
+			stiffness: 80,
+			damping: 16,
+			delay,
+		},
+	},
+});
+
 const ExperienceBlock = ({ title, duration, description, projects }) => (
 	<div className="mt-4 blue-green-gradient rounded-[20px]">
 		<div className="bg-black-100 rounded-2xl sm:px-16 px-6 sm:pt-8 sm:pb-16 py-10 sm:min-h-[45vh] min-h-[57vh]">
@@ -183,45 +194,35 @@ const ExperienceBlock = ({ title, duration, description, projects }) => (
 
 // -------------------- Main Experience --------------------
 const Experience = () => {
+	const { t } = useTranslation();
+
 	const renderProjects = useCallback((projects) =>
 		projects.map((p, i) => <ProjectCard key={`project-${i}`} index={i} {...p} />),
 		[]
 	);
-
 	return (
 		<>
-			<SectionHeader subText="Projects" headText="_Professional" />
-			<ExperienceBlock title="Zeo Technology" duration="3 years 8 months"
-				description="A global Industry 4.0 pioneer, blending agility and innovation to transform manufacturing. Recognized worldwide as a leader in MES systems, and trusted by industry leaders including Cinfa, Florette, and Onnera"
+			<SectionHeader subText={t(`experience.projects`)} headText={t(`experience.professional`)} />
+			<ExperienceBlock title="Zeo Technology" duration={t(`experience.zeo.3years8months`)}
+				description={t(`experience.zeo.description`)}
 				projects={renderProjects(professionalProjects)}
 			/>
-			<SectionHeader subText="Projects" headText="_Personal" className="mt-16" />
+			<SectionHeader className="mt-20" subText={t(`experience.projects`)} headText={t(`experience.personal.title`)} />
 			<ExperienceBlock
-				title="Accomplished"
-				duration="7 months"
-				description="Includes a few completed projects that are no longer under active development, but are maintained and updated as needed"
+				title={t(`experience.personal.acomplished`)}
+				duration={t(`experience.personal.7months`)}
+				description={t(`experience.personal.acomplishedText`)}
 				projects={renderProjects(acomplishedProjects)}
 			/>
 			<ExperienceBlock
-				title="Active and planned"
-				duration="3 months"
-				description="Features projects under active development or planned for near- to mid-term completion. Only completed experience is listed above"
+				title={t(`experience.personal.active`)}
+				duration={t(`experience.personal.3months`)}
+				description={t(`experience.personal.activeText`)}
 				projects={renderProjects(activeProjects)}
 			/>
 			<ExperienceDisplay years={4} months={6} duration={3000} />
 		</>
 	);
 };
-
-// -------------------- Section Header --------------------
-const SectionHeader = ({ subText, headText, className = "" }) => (
-	<motion.div variants={textVariant()} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className={className}>
-		<p className={styles.sectionSubText}>{subText}</p>
-		<h2 className={styles.sectionHeadText}>
-			<span className="text-tertiary">{headText[0]}</span>
-			{headText.slice(1)}
-		</h2>
-	</motion.div>
-);
 
 export default SectionWrapper(Experience, "experience");

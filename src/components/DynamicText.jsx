@@ -63,7 +63,7 @@ const DynamicText = () => {
 	const currentSkill = SKILLS[index];
 
 	return (
-		<div className="mt-2 h-12 flex items-center">
+		<div className="sm:mt-2 h-12 flex items-center">
 			<AnimatePresence mode="wait">
 				<motion.div
 					key={currentSkill}

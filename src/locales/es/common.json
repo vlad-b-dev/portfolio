@@ -1,0 +1,100 @@
+{
+    "navbar": {
+        "fullStack": "Desarrollador Full Stack",
+        "fullStackMobile": "Desarrollador<br/>Full Stack",
+        "navLinks": {
+            "about": "Perfil",
+            "experience": "Proyectos",
+            "contact": "Contacto"
+        }
+    },
+    "welcomeSection": {
+        "hi": "Hola, soy ",
+        "description": "Desarrollador software, <br/> apasionado por el diseño y la programación"
+    },
+    "about": {
+        "profile": "Perfil",
+        "summary": "Resumen",
+        "summaryText": "Soy desarrollador de software y experto en UX/UI, con experiencia en soluciones de Industria 4.0. Domino TypeScript, JavaScript, Java y Python, y trabajo con frameworks como Angular, React y Spring Boot para crear aplicaciones escalables y fáciles de usar. Combino conocimientos técnicos y diseño para desarrollar software innovador y confiable, adaptado a necesidades reales.",
+        "habilities": {
+            "fullStack": "Desarrollo Full-stack",
+            "modernFrameworks": "Frameworks modernos",
+            "uxUi3d": "UX/UI | 3D Web",
+            "qaAndTesting": "QA | Testing",
+            "graphicDesign": "Diseño gráfico",
+            "scrum": "Scrum-Agile"
+        }
+    },
+    "experience":{
+        "projects": "Proyectos",
+        "professional": "Profesional",
+        "zeo":{
+            "3years8months": "3 años 8 meses",
+            "description": "Empresa líder en Industria 4.0 a nivel mundial, que combina metodologías ágiles e innovación para transformar la manufacturación. Reconocida internacionalmente por sus sistemas MES, con clientes como Cinfa, Florette y Onnera"
+        },
+        "personal":{
+            "title": "Personal",
+            "acomplished": "Completado",
+            "acomplishedText": "Incluye algunos proyectos completados que ya no están en desarrollo activo, pero que se mantienen y se actualizan según sea necesario",
+            "7months": "7 meses",
+            "active": "En activo y planificado",
+            "activeText": "Incluye proyectos en desarrollo activo o planificados a corto-medio plazo. Solamente se contabiliza la experiencia completada",
+            "3months": "3 meses",
+            "projects": {
+                "reportWizard":{
+                    "name":"Report Wizard",
+                    "description":"Aplicación de edición que permite a los usuarios crear informes totalmente personalizados. Diseñar las vistas, integrar gráficos y organizar el contenido mediante drag and drop, permitiendo un control total al cliente."
+                },
+                "componentsLibrary":{
+                    "name": "Componentes visuales",
+                    "description": "Biblioteca de componentes visuales, adaptados al estilo de la empresa y totalmente personalizables. Empleados en toda la aplicación, especialmente en los filtros configurables del Report Wizard."
+                },
+                "reportVisor":{
+                    "name": "Report Visor | Planificador",
+                    "description": "Permite a los usuarios ejecutar informes generados y exportarlos en varios formatos mediante un motor de informes personalizado. Incluye un planificador para el envío de informes por correo a las horas y personas seleccionadas."
+                },
+           
+                "portfolio":{
+                    "name": "Portfolio",
+                    "description": "Portfolio personal centrado en UX/UI, rendimiento y experiencia de usuario. Muestra la información de forma clara, con interacciones 3D, y sirve como ejemplo de mis habilidades, así como un espacio para experimentar con nuevas tecnologías."
+                },
+                "allIn":{
+                    "name": "All-In",
+                    "description": "Mi primer sitio web, desarrollado y desplegado personalmente. Aunque el diseño y la UX eran básicos, el proyecto fue una valiosa experiencia de aprendizaje que marcó el inicio de mi camino en el desarrollo frontend y la experiencia de usuario."
+                },
+                "bmways":{
+                    "name": "BMWays",
+                    "description": "Aplicación móvil desarrollada junto a un compañero durante la universidad. Organiza información sobre reparaciones, incluyendo guías y piezas disponibles para compra. Aunque aún no se ha lanzado, fue nuestra primera experiencia en desarrollo móvil."
+                },
+                "coinPulse":{
+                    "name": "CoinPulse",    
+                    "description": "Proyecto colaborativo en etapa intermedia de desarrollo. Permite el seguimiento de criptomonedas recién lanzadas desde fuentes alta frecuencia de actualización y envía notificaciones ante fluctuaciones significativas del mercado. Las alertas incluyen todos los datos clave, facilitando decisiones rápidas en plataformas más lentas."
+                },
+                "kilaApp":{
+                    "name": "Kila App",
+                    "description": "Aplicación móvil, conceptualmente similar a Wallapop, enfocada en el alquiler. Permite a los usuarios alquilar artículos que necesitan temporalmente o prestar objetos que no están usando. Originalmente un proyecto universitario, planeamos retomar su desarrollo con el objetivo de finalmente lanzarlo."
+                },
+                "vibeCast":{
+                    "name": "VibeCast",
+                    "description": "Clon de YouTube planificado, con inicio próximo. El proyecto tiene como objetivo mejorar mis habilidades en transmisión y gestión de grandes volúmenes de datos, con prioridad en la experiencia (UX) e interfaz de usuario (UI)."
+                }
+            }    
+        },
+        "totalExperience": "Experiencia acumulada:",
+        "year": "año",
+        "years": "años",
+        "month": "mes",
+        "months": "meses"
+    },
+    "contact": {
+        "title": "Contacto",
+        "name": "Nombre",
+        "namePlaceholder": "¿Quién eres?",
+        "email": "Email",
+        "emailPlaceholder": "¿Por donde puedo responderte?",
+        "message": "Mensaje",
+        "messagePlaceholder": "¿Qué quisieras compartir?",
+        "send": "Enviar",
+        "sending": "Enviando..."
+    }
+}

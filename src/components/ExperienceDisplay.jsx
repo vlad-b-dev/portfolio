@@ -1,6 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import AutoTrans from "./AutoTrans";
+import { useTranslation } from "react-i18next";
 
 const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
     const [displayYears, setDisplayYears] = useState(0);
@@ -8,6 +10,9 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
     const [readyToCount, setReadyToCount] = useState(false);
     const { ref, inView } = useInView({ triggerOnce: true, threshold: 1 });
     const startedRef = useRef(false);
+
+    const { t } = useTranslation();
+
 
     useEffect(() => {
         if (!inView || startedRef.current) return;
@@ -65,17 +70,17 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
                 boxShadow: "inset 0 0 35px 25px rgba(0,0,0,1)",
             }}
         >
-            Total experience: <br />
+            <AutoTrans i18nKey="experience.totalExperience"></AutoTrans> <br />
             <span className="sm:text-[40px] text-[22px] text-tertiary">
                 +
                 <span className="inline-block min-w-[2ch] text-right">
                     {displayYears}
                 </span>{" "}
-                {displayYears === 1 ? "year" : "years"}{" "}
+                {displayYears === 1 ? t("experience.year") : t("experience.years")}
                 <span className="inline-block min-w-[2ch] text-right">
                     {displayMonths}
                 </span>{" "}
-                {displayMonths === 1 ? "month" : "months"}
+                {displayMonths === 1 ? t("experience.month") : t("experience.months")}
             </span>
         </motion.h2>
     );
