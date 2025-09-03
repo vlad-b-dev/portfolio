@@ -9,6 +9,7 @@ import ExperienceDisplay from "./ExperienceDisplay";
 import { github } from "../assets";
 import SectionHeader from "./SectionHeader";
 import { useTranslation } from "react-i18next";
+import ResumeWrapper from "./ResumeWrapper";
 
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
@@ -143,10 +144,10 @@ const ProjectContent = ({ id, name, tags, image, source_code_link, link }) => {
 
 			<div className="mt-5">
 				<h3 className="text-white font-bold text-[18px] sm:text-[22px]">
-					{t(`experience.personal.projects.${id}.name`)}
+					{t(`projects.personal.projects.${id}.name`)}
 				</h3>
 				<p className="mt-2 text-secondary text-[14px] leading-relaxed">
-					{t(`experience.personal.projects.${id}.description`)}
+					{t(`projects.personal.projects.${id}.description`)}
 				</p>
 			</div>
 
@@ -162,7 +163,7 @@ const ProjectContent = ({ id, name, tags, image, source_code_link, link }) => {
 };
 
 
-// -------------------- Experience Block --------------------
+// -------------------- Projects Block --------------------
 const textVariant = (delay = 0) => ({
 	hidden: { opacity: 0, y: 20 },
 	show: {
@@ -192,8 +193,8 @@ const ExperienceBlock = ({ title, duration, description, projects }) => (
 	</div>
 );
 
-// -------------------- Main Experience --------------------
-const Experience = () => {
+// -------------------- Main Projects --------------------
+const Projects = () => {
 	const { t } = useTranslation();
 
 	const renderProjects = useCallback((projects) =>
@@ -202,27 +203,28 @@ const Experience = () => {
 	);
 	return (
 		<>
-			<SectionHeader subText={t(`experience.projects`)} headText={t(`experience.professional`)} />
-			<ExperienceBlock title="Zeo Technology" duration={t(`experience.zeo.3years8months`)}
-				description={t(`experience.zeo.description`)}
+			<SectionHeader subText={t(`projects.projects`)} headText={t(`projects.professional`)} />
+			<ExperienceBlock title="Zeo Technology" duration={t(`projects.zeo.3years8months`)}
+				description={t(`projects.zeo.description`)}
 				projects={renderProjects(professionalProjects)}
 			/>
-			<SectionHeader className="mt-20" subText={t(`experience.projects`)} headText={t(`experience.personal.title`)} />
+			<SectionHeader className="mt-20" subText={t(`projects.projects`)} headText={t(`projects.personal.title`)} />
 			<ExperienceBlock
-				title={t(`experience.personal.acomplished`)}
-				duration={t(`experience.personal.7months`)}
-				description={t(`experience.personal.acomplishedText`)}
+				title={t(`projects.personal.acomplished`)}
+				duration={t(`projects.personal.7months`)}
+				description={t(`projects.personal.acomplishedText`)}
 				projects={renderProjects(acomplishedProjects)}
 			/>
 			<ExperienceBlock
-				title={t(`experience.personal.active`)}
-				duration={t(`experience.personal.3months`)}
-				description={t(`experience.personal.activeText`)}
+				title={t(`projects.personal.active`)}
+				duration={t(`projects.personal.3months`)}
+				description={t(`projects.personal.activeText`)}
 				projects={renderProjects(activeProjects)}
 			/>
 			<ExperienceDisplay years={4} months={6} duration={3000} />
+			<ResumeWrapper />
 		</>
 	);
 };
 
-export default SectionWrapper(Experience, "experience");
+export default SectionWrapper(Projects, "projects");

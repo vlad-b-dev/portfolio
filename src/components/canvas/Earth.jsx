@@ -245,6 +245,8 @@ const EarthCanvas = () => {
             inset: 0,
             zIndex: 10,
             background: "transparent",
+            height: "95%",
+            top: "0",
           }}
         />
       )}

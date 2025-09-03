@@ -18,10 +18,10 @@ import {
 
 export const navLinks = [
 	{
-		id: "about",
+		id: "profile",
 	},
 	{
-		id: "experience",
+		id: "projects",
 	},
 	{
 		id: "contact",
@@ -110,7 +110,7 @@ const getTagColor = (tagName) => skillColors[tagName] || "text-white";
 
 const professionalProjects = [
 	{
-		id:"reportWizard",
+		id: "reportWizard",
 		tags: [
 			"SpringBoot",
 			"Angular",

@@ -73,7 +73,7 @@ const StarsCanvas = () => {
 	const isMobile = useMemo(() => window.innerWidth < 640, []);
 
 	return (
-		<div ref={ref} className="w-full h-auto absolute inset-0 z-[-1]">
+		<div ref={ref} className="w-full h-auto absolute inset-0 z-[-1] -mt-12">
 			{inView && (
 				<Canvas
 					camera={{ position: [0, 0, 1] }}

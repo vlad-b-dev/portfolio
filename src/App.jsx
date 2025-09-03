@@ -3,11 +3,11 @@ import { BrowserRouter } from "react-router-dom";
 import { Navbar, WelcomeSection } from "./components";
 
 
-const About = lazy(() =>
-	import("./components").then((m) => ({ default: m.About }))
+const Profile = lazy(() =>
+	import("./components").then((m) => ({ default: m.Profile }))
 );
-const Experience = lazy(() =>
-	import("./components").then((m) => ({ default: m.Experience }))
+const Projects = lazy(() =>
+	import("./components").then((m) => ({ default: m.Projects }))
 );
 const Contact = lazy(() =>
 	import("./components").then((m) => ({ default: m.Contact }))
@@ -31,11 +31,11 @@ const App = () => {
 				</div>
 
 				<Suspense fallback={<SectionFallback h="60vh" />}>
-					<About />
+					<Profile />
 				</Suspense>
 
 				<Suspense fallback={<SectionFallback h="60vh" />}>
-					<Experience />
+					<Projects />
 				</Suspense>
 
 

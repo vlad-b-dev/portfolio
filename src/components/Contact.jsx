@@ -17,7 +17,7 @@ const Contact = () => {
 		message: "",
 	});
 	const [loading, setLoading] = useState(false);
-	const [success, setSuccess] = useState(false); // Controla animación de éxito
+	const [success, setSuccess] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 
 	useEffect(() => {
@@ -42,9 +42,7 @@ const Contact = () => {
 				import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
 				{
 					from_name: form.name,
-					to_name: "Mi Nombre",
 					from_email: form.email,
-					to_email: "miemail@gmail.com",
 					reply_to: form.email,
 					message: form.message,
 				},
@@ -60,21 +58,20 @@ const Contact = () => {
 				(error) => {
 					setLoading(false);
 					console.error(error);
-					alert("Ahh, algo salió mal. Intenta nuevamente.");
+					alert(t(`contact.error`));
 				}
 			);
 	};
 
 	return (
-		<div className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}>
-			{/* Formulario */}
+		<div className={`flex xl:flex-row flex-col-reverse gap-10 overflow-hidden`}>
 			<motion.div
 				variants={slideIn("left", "tween", 0.2, 1)}
 				className="flex-[0.75] bg-black-100 p-6 rounded-2xl z-10 relative"
 			>
 				<SectionHeader subText={t(`contact.title`)} headText={t(`contact.email`)} />
 
-				<form ref={formRef} onSubmit={handleSubmit} className="mt-3 flex flex-col gap-4 z-20" >
+				<form ref={formRef} onSubmit={handleSubmit} className="mt-2 flex flex-col gap-4 z-20" >
 					<label className="flex flex-col">
 						<span className="text-white font-medium mb-2"><AutoTrans i18nKey="contact.name"></AutoTrans></span>
 						<input
@@ -114,27 +111,26 @@ const Contact = () => {
 					<button
 						type="submit"
 						className="
-               bg-tertiary 
-               py-2 px-6 
-               rounded-xl 
-               outline-none 
-               w-fit 
-               text-black-100 
-               font-bold 
-               shadow-md shadow-primary 
-               transform 
-               transition-transform 
-               duration-150 
-               ease-in-out
-               hover:scale-95 
-               hover:translate-y-0.5
-             "
+            			  bg-tertiary 
+            			  py-2 px-6 
+            			  rounded-xl 
+            			  outline-none 
+            			  w-fit 
+            			  text-black-100 
+            			  font-bold 
+            			  shadow-md shadow-primary 
+            			  transform 
+            			  transition-transform 
+            			  duration-150 
+            			  ease-in-out
+            			  hover:scale-95 
+            			  hover:translate-y-0.5
+            			"
 					>
 						{loading ? t(`contact.sending`) : t(`contact.send`)}
 					</button>
 				</form>
 
-				{/* Animación de éxito en móvil sobre el formulario */}
 				<AnimatePresence>
 					{success && isMobile && (
 						<motion.div
@@ -168,7 +164,6 @@ const Contact = () => {
 				</AnimatePresence>
 			</motion.div>
 
-			{/* EarthCanvas y animación de éxito para desktop */}
 			<div className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px] relative">
 				<AnimatePresence>
 					{(!success || isMobile) && (

@@ -70,17 +70,17 @@ const ExperienceDisplay = ({ years, months, duration = 2000 }) => {
                 boxShadow: "inset 0 0 35px 25px rgba(0,0,0,1)",
             }}
         >
-            <AutoTrans i18nKey="experience.totalExperience"></AutoTrans> <br />
+            <AutoTrans i18nKey="projects.totalExperience"></AutoTrans> <br />
             <span className="sm:text-[40px] text-[22px] text-tertiary">
                 +
                 <span className="inline-block min-w-[2ch] text-right">
                     {displayYears}
                 </span>{" "}
-                {displayYears === 1 ? t("experience.year") : t("experience.years")}
+                {displayYears === 1 ? t("projects.year") : t("projects.years")}
                 <span className="inline-block min-w-[2ch] text-right">
                     {displayMonths}
                 </span>{" "}
-                {displayMonths === 1 ? t("experience.month") : t("experience.months")}
+                {displayMonths === 1 ? t("projects.month") : t("projects.months")}
             </span>
         </motion.h2>
     );

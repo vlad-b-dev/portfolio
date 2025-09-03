@@ -87,7 +87,7 @@ const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll }, external
 				className="flex flex-col items-center"
 			>
 				<h3 className="text-white text-xs sm:text-base font-bold text-center min-h-[3.5rem] flex items-center">
-					{t(`about.habilities.${id}`)}
+					{t(`profile.habilities.${id}`)}
 				</h3>
 
 				<div className="relative p-[3px] rounded-full bg-tertiary overflow-visible">
@@ -119,7 +119,7 @@ const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll }, external
 	);
 });
 
-const About = () => {
+const Profile = () => {
 	const isMobile = useMemo(() => window.innerWidth < 640, []);
 	const firstCardRef = useRef(null);
 	const [triggerAll, setTriggerAll] = useState(false);
@@ -145,7 +145,7 @@ const About = () => {
 
 	return (
 		<>
-			<SectionHeader subText={t(`about.profile`)} headText={t(`about.summary`)} />
+			<SectionHeader subText={t(`profile.profile`)} headText={t(`profile.summary`)} />
 			<motion.p
 				variants={fadeIn("", "", 0.1, 1)}
 				initial="hidden"
@@ -153,7 +153,7 @@ const About = () => {
 				viewport={{ once: true, amount: 0.25 }}
 				className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
 			>
-				<AutoTrans i18nKey="about.summaryText"></AutoTrans>
+				<AutoTrans i18nKey="profile.summaryText"></AutoTrans>
 			</motion.p>
 
 			<div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-x-5 gap-y-10">
@@ -171,4 +171,4 @@ const About = () => {
 	);
 };
 
-export default SectionWrapper(About, "about");
+export default SectionWrapper(Profile, "profile");

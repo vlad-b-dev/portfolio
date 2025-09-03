@@ -3,24 +3,24 @@ import github from "./github.png";
 import menu from "./menu.svg";
 import close from "./close.svg";
 
-import web3d from "./about/web3d.webp";
-import agileScrum from "./about/agileScrum.webp";
-import fullStack from "./about/fullStack.webp";
-import graphicDesign from "./about/graphicDesign.webp";
-import modernFrameworks from "./about/modernFrameworks.webp";
-import qaAndTesting from "./about/qaAndTesting.webp";
+import web3d from "./profile/web3d.webp";
+import agileScrum from "./profile/agileScrum.webp";
+import fullStack from "./profile/fullStack.webp";
+import graphicDesign from "./profile/graphicDesign.webp";
+import modernFrameworks from "./profile/modernFrameworks.webp";
+import qaAndTesting from "./profile/qaAndTesting.webp";
 
-import reportWizardLogo from "./experience/reportWizardLogo.webp";
-import zeoLogo from "./experience/zeoLogo.webp";
-import reportVisorLogo from "./experience/reportVisorLogo.webp";
+import reportWizardLogo from "./projects/reportWizardLogo.webp";
+import zeoLogo from "./projects/zeoLogo.webp";
+import reportVisorLogo from "./projects/reportVisorLogo.webp";
 
-import portfolioLogo from "./experience/portfolioLogo.webp";
-import allInLogo from "./experience/allInLogo.webp";
-import bmwaysLogo from "./experience/bmwaysLogo.webp";
+import portfolioLogo from "./projects/portfolioLogo.webp";
+import allInLogo from "./projects/allInLogo.webp";
+import bmwaysLogo from "./projects/bmwaysLogo.webp";
 
-import coinPulseLogo from "./experience/coinPulseLogo.webp";
-import kilaAppLogo from "./experience/kilaAppLogo.webp";
-import vibeCastLogo from "./experience/vibeCastLogo.webp";
+import coinPulseLogo from "./projects/coinPulseLogo.webp";
+import kilaAppLogo from "./projects/kilaAppLogo.webp";
+import vibeCastLogo from "./projects/vibeCastLogo.webp";
 
 export {
 	logo,

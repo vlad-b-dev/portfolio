@@ -49,7 +49,7 @@ const WelcomeSection = () => {
 
 			{/* Scroll Indicator */}
 			<div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center sm:mb-0">
-				<a href="#about">
+				<a href="#profile">
 					<div className="sm:w-8 sm:h-16 w-10 h-20 rounded-3xl border-4 border-white flex justify-center items-start p-2">
 						<motion.div
 							animate={{ y: [0, 24, 0] }}
