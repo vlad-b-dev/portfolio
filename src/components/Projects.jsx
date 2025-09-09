@@ -50,11 +50,11 @@ const ProjectCard = memo(({ index, ...project }) => {
 			initial="hidden"
 			whileInView="show"
 			viewport={{ once: true, amount: 0.2 }}
-			whileHover={{ scale: 1.02 }}
-			whileTap={{ scale: 0.97 }}
+			whileHover={!isMobile ? { scale: 1.02 } : {}}
+			whileTap={!isMobile ? { scale: 0.97 } : {}}
 		>
 			{isMobile ? (
-				<MobileTiltWrapper>{content}</MobileTiltWrapper>
+				<MobileSimpleWrapper>{content}</MobileSimpleWrapper>
 			) : (
 				<Tilt
 					tiltMaxAngleX={17}
@@ -71,44 +71,16 @@ const ProjectCard = memo(({ index, ...project }) => {
 	);
 });
 
-// -------------------- Mobile Tilt Wrapper --------------------
-const MobileTiltWrapper = ({ children }) => {
-	const [rotation, setRotation] = useState({ x: 0, y: 0 });
-	const handleMove = useCallback((e) => {
-		const rect = e.currentTarget.getBoundingClientRect();
-		const clientX = e.touches?.[0]?.clientX ?? e.clientX;
-		const clientY = e.touches?.[0]?.clientY ?? e.clientY;
-
-		const x = (clientX - rect.left) / rect.width - 0.35;
-		const y = (clientY - rect.top) / rect.height - 0.35;
-
-		setRotation({ x: y * 45, y: x * -45 });
-	}, []);
-
-	const handleLeave = useCallback(() => setRotation({ x: 0, y: 0 }), []);
-
-	const shadowStyle = {
-		boxShadow: `${-rotation.y / 2}px ${rotation.x / 2}px 30px rgba(0,0,0,0.9)`,
-		transformStyle: "preserve-3d",
-	};
-
+// -------------------- Mobile Simple Wrapper --------------------
+const MobileSimpleWrapper = ({ children }) => {
 	return (
-		<motion.div
-			onMouseMove={handleMove}
-			onMouseLeave={handleLeave}
-			onTouchMove={handleMove}
-			onTouchEnd={handleLeave}
-			animate={{ rotateX: rotation.x, rotateY: rotation.y }}
-			transition={{ type: "tween", duration: 0.2, ease: "easeOut" }}
-			style={shadowStyle}
-			className="bg-primary p-5 rounded-2xl w-full h-full border-2 border-tertiary"
-			whileHover={{ scale: 1.02 }}
-			whileTap={{ scale: 0.97 }}
-		>
+		<div className="bg-primary p-5 rounded-2xl w-full h-full border-2 border-tertiary shadow-lg shadow-black/30">
 			{children}
-		</motion.div>
+		</div>
 	);
 };
+
+
 
 // -------------------- Project Content --------------------
 const ProjectContent = ({ id, name, tags, image, source_code_link, link }) => {

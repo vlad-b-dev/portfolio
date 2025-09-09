@@ -11,7 +11,7 @@ import SectionHeader from "./SectionHeader";
 
 
 
-const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll }, externalRef) => {
+const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll, isMobile }, externalRef) => {
 	const ringRef = useRef(null);
 	const lightRef = useRef(null);
 	const { t } = useTranslation();
@@ -79,11 +79,11 @@ const HabilityCard = React.forwardRef(({ index, id, icon, triggerAll }, external
 		>
 			<motion.div
 				ref={ringRef}
-				variants={fadeIn("right", "spring", index * 0.5, 0.75)}
+				variants={fadeIn("right", "spring", (isMobile ? index * 0.12 : index * 0.5), 0.6)}
 				initial="hidden"
 				animate={triggerAll ? "show" : undefined}
 				whileInView={!triggerAll ? "show" : undefined}
-				viewport={{ once: true, amount: 0.05 }}
+				viewport={{ once: true, amount: isMobile ? 0.01 : 0.05 }}
 				className="flex flex-col items-center"
 			>
 				<h3 className="text-white text-xs sm:text-base font-bold text-center min-h-[3.5rem] flex items-center">
@@ -163,6 +163,7 @@ const Profile = () => {
 						index={index}
 						{...hability}
 						triggerAll={isMobile ? undefined : triggerAll}
+						isMobile={isMobile}
 						ref={!isMobile && index === 0 ? firstCardRef : null}
 					/>
 				))}

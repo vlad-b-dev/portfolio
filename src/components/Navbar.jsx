@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
-import { LanguajeSwitch } from "./index";
-import { AutoTrans } from "./index";
+import { LanguajeSwitch, AutoTrans } from "./index";
 import { useTranslation } from "react-i18next";
 
 
@@ -36,13 +35,11 @@ const iconVariants = {
 
 // === Component ===
 const Navbar = () => {
-	const [active, setActive] = useState("");
 	const [toggle, setToggle] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const toggleMenu = useRef(null);
 
 	const { t } = useTranslation();
-
 
 	// Scroll listener
 	useEffect(() => {
@@ -130,7 +127,6 @@ const Navbar = () => {
 						to="/"
 						className="hidden sm:flex items-center gap-2"
 						onClick={() => {
-							setActive("");
 							window.scrollTo(0, 0);
 						}}
 					>
@@ -149,11 +145,14 @@ const Navbar = () => {
 						{navLinks.map((nav) => (
 							<li
 								key={nav.id}
-								className={`${active === nav.title ? "text-white" : "text-secondary"
-									} hover:text-white text-[16px] font-medium cursor-pointer`}
-								onClick={() => setActive(nav.title)}
+								className={`text-[16px] font-medium`}
 							>
-								<a href={`#${nav.id}`}>{t(`navbar.navLinks.${nav.id}`)}</a>
+								<a
+									href={`#${nav.id}`}
+									className="cursor-pointer text-secondary hover:text-white focus:text-secondary active:text-secondary visited:text-secondary"
+								>
+									{t(`navbar.navLinks.${nav.id}`)}
+								</a>
 							</li>
 						))}
 					</ul>
@@ -193,14 +192,17 @@ const Navbar = () => {
 								<motion.li
 									key={nav.id}
 									className="font-medium text-[18px] text-white"
-									onClick={() => {
-										setToggle(false);
-										setActive(nav.title);
-									}}
 									variants={mobileLinkVariants}
 									transition={{ type: "spring", stiffness: 400, damping: 25 }}
 								>
-									<a href={`#${nav.id}`}>{t(`navbar.navLinks.${nav.id}`)}</a>
+									<a
+										href={`#${nav.id}`}
+										onClick={() => {
+											setToggle(false);
+										}}
+									>
+										{t(`navbar.navLinks.${nav.id}`)}
+									</a>
 								</motion.li>
 							))}
 						</motion.ul>
