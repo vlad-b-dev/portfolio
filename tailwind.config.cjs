@@ -21,6 +21,9 @@ module.exports = {
 			backgroundImage: {
 				"hero-pattern": "url('/src/assets/welcomeBg.webp')",
 			},
+			backdropBlur: {
+				xs: "3.5px",
+			},
 		},
 	},
 	plugins: [],
